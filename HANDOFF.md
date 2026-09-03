@@ -47,9 +47,14 @@ Last updated: 2026-09-03.
 - Exact owner label: `agent-real-rooted-a15715-p-2d7995a4`.
 - Project `57162fe9-9b15-4c9d-bbf4-57789a508996`, task
   `9b1af9d7-403f-4ff2-90f2-0e718e8d51d0`: focused direct rank-order-to-
-  determinant-nonnegativity convenience theorem. Status at submission:
-  `QUEUED`. The upload was a clean archive of checkpoint `26dd2e9` in
-  `/tmp`; no repository dependency cache or credentials were uploaded.
+  determinant-nonnegativity convenience theorem. Final status: `FAILED` after
+  2m38s, with no diagnostic event and no source change in the downloaded
+  archive. Aristotle warned that the project used Lean 4.31.0-rc2 rather than
+  its preferred 4.28.0 and that the temporary upload intentionally omitted the
+  `.lake` dependency cache. The downloaded archive SHA-256 is
+  `17229b7911cb69aafe0858a1516ec300fda48f725047ee930c52a35f8d482c84`.
+  The upload was a clean archive of checkpoint `26dd2e9` in `/tmp`; no
+  repository dependency cache or credentials were uploaded.
 - This task is advisory. Adopt any result only in a separately verified
   follow-up commit. Do not manage Aristotle tasks owned by another session.
 
