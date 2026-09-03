@@ -28,7 +28,7 @@ open scoped BigOperators
 
 noncomputable section
 
-universe u v w
+universe u v w x
 
 /--
 Abstract sign-reversing cancellation lemma.
@@ -88,6 +88,26 @@ instance instFintypeSignedPathFamily (N : FinitePathNetwork R ι) :
 /-- The path matrix of a finite weighted path network. -/
 def matrix [AddCommMonoid R] (N : FinitePathNetwork R ι) : Matrix ι ι R :=
   fun s t => ∑ p : N.Path s t, N.weight p
+
+/-- Restrict or reindex the source and sink labels of a path network. -/
+def reindex {κ : Type x} (N : FinitePathNetwork R ι)
+    (source sink : κ → ι) : FinitePathNetwork R κ where
+  Path i j := N.Path (source i) (sink j)
+  instFintypePath := fun _ _ => inferInstance
+  weight := N.weight
+
+omit [Fintype ι] [DecidableEq ι] in
+@[simp] theorem reindex_weight {κ : Type x} (N : FinitePathNetwork R ι)
+    (source sink : κ → ι) {i j : κ}
+    (p : (N.reindex source sink).Path i j) :
+    (N.reindex source sink).weight p = N.weight p :=
+  rfl
+
+omit [Fintype ι] [DecidableEq ι] in
+@[simp] theorem reindex_matrix_apply [AddCommMonoid R] {κ : Type x}
+    (N : FinitePathNetwork R ι) (source sink : κ → ι) (i j : κ) :
+    (N.reindex source sink).matrix i j = N.matrix (source i) (sink j) :=
+  rfl
 
 omit [Fintype ι] [DecidableEq ι] in
 @[simp] theorem matrix_apply [AddCommMonoid R] (N : FinitePathNetwork R ι)

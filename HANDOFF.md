@@ -52,3 +52,14 @@ Last updated: 2026-09-03.
   `/tmp`; no repository dependency cache or credentials were uploaded.
 - This task is advisory. Adopt any result only in a separately verified
   follow-up commit. Do not manage Aristotle tasks owned by another session.
+
+## Pending local follow-up
+
+- Added `FinitePathNetwork.reindex` and its matrix-entry simp theorem so a
+  consumer can represent arbitrary source/sink restrictions and matrix minors
+  without rebuilding path types by hand. The warning-free umbrella rebuild
+  passed.
+- `/root` acquired the free serialized slot at 13:57 UTC to verify this isolated
+  reindexing addition; no batch process was running at acquisition.
+- `/root` released the serialized slot at 13:58 UTC after the successful build.
+  No further batch command is authorized under this acquisition.

@@ -6,7 +6,8 @@ of the Lindström--Gessel--Viennot method.
 The package deliberately separates two concerns:
 
 - `LGV.Finite` expands the determinant of a finite path matrix and exposes an
-  abstract sign-reversing-cancellation theorem.
+  abstract sign-reversing-cancellation theorem. Its `FinitePathNetwork.reindex`
+  constructor produces the source/sink restrictions used for matrix minors.
 - `LGV.Ordered` turns an ordered two-path obstruction and a cancellation
   certificate into an unsigned sum over pairwise-disjoint path families, with a
   nonnegative-determinant corollary for nonnegative weights.
