@@ -32,12 +32,24 @@ Last updated: 2026-09-06.
   and vertex-union preservation, and preservation of vertices above the swap
   rank. Its focused warning-free build passed (1401 jobs). The next increment
   is the bad-family collision selector and signed family involution.
+- Checkpoint `472e402` lifts the two-path swap to signed families, proves
+  unsigned family-weight preservation and signed-weight negation, and keeps
+  the swapped family intersecting. The current warning-free selector increment
+  chooses maximum collision rank, then least left/right indices, then the
+  unique common vertex at that rank; all four coordinates are invariant under
+  the canonical swap. The remaining backend obligation is exact equality after
+  swapping the dependent signed family twice.
 - Aristotle advisory project `603cd1b2-3b84-4479-a10c-e7c7b95ab4d1`, task
   `4987f6a2-b5eb-45f3-b514-58d370f3a4fd` (owner label
   `root-leanlgv-20260906`), was scoped only to the isolated two-path tail-swap
   weight identity. It failed remotely after about two minutes without a
   diagnostic; Aristotle had warned that its Lean 4.28 preference does not
   match this package's Lean 4.31.0-rc2 pin. No generated source was adopted.
+- Aristotle retry project `e0b2e15e-0449-4799-bd0b-eebac2925765`, task
+  `469fb1b7-4895-4ea3-91ed-66b005aec0b7`, was given only the exact dependent
+  family double-swap equality from clean detached checkpoint `472e402`. It also
+  failed without a diagnostic under the same version warning. No generated
+  source was adopted.
 
 ## Active extraction
 

@@ -82,6 +82,39 @@ theorem rank_mem_le_start (N : RankedQuiverNetwork R V ι)
   have hrank := Quiver.Path.length_add_rank_le N.rank N.rank_decreases p₁
   lia
 
+/-- A vertex of the same rank as the start of a ranked path is that start. -/
+theorem eq_start_of_mem_vertices_of_rank_eq
+    (N : RankedQuiverNetwork R V ι)
+    {a b x : V} (p : Quiver.Path a b) (hx : x ∈ p.vertices)
+    (hrank : N.rank x = N.rank a) : x = a := by
+  obtain ⟨p₁, p₂, _hp⟩ := p.exists_eq_comp_of_mem_vertices hx
+  have hle := Quiver.Path.length_add_rank_le N.rank N.rank_decreases p₁
+  have hlength : p₁.length = 0 := by lia
+  exact (Quiver.Path.eq_of_length_zero p₁ hlength).symm
+
+/-- A vertex of the same rank as the end of a ranked path is that end. -/
+theorem eq_end_of_mem_vertices_of_rank_eq
+    (N : RankedQuiverNetwork R V ι)
+    {a b x : V} (p : Quiver.Path a b) (hx : x ∈ p.vertices)
+    (hrank : N.rank x = N.rank b) : x = b := by
+  obtain ⟨p₁, p₂, _hp⟩ := p.exists_eq_comp_of_mem_vertices hx
+  have hle := Quiver.Path.length_add_rank_le N.rank N.rank_decreases p₂
+  have hlength : p₂.length = 0 := by lia
+  exact Quiver.Path.eq_of_length_zero p₂ hlength
+
+/-- A ranked path contains at most one vertex of each rank. -/
+theorem eq_of_mem_vertices_of_rank_eq
+    (N : RankedQuiverNetwork R V ι)
+    {a b x y : V} (p : Quiver.Path a b)
+    (hx : x ∈ p.vertices) (hy : y ∈ p.vertices)
+    (hrank : N.rank x = N.rank y) : x = y := by
+  obtain ⟨p₁, p₂, hp⟩ := p.exists_eq_comp_of_mem_vertices hx
+  have hy' : y ∈ (p₁.comp p₂).vertices := by
+    exact congrArg Quiver.Path.vertices hp ▸ hy
+  rcases (mem_vertices_comp_iff p₁ p₂).mp hy' with hyLeft | hyRight
+  · exact (N.eq_end_of_mem_vertices_of_rank_eq p₁ hyLeft hrank.symm).symm
+  · exact (N.eq_start_of_mem_vertices_of_rank_eq p₂ hyRight hrank.symm).symm
+
 /-- Above the joining vertex, every vertex of a composite path belongs to its
 left part. -/
 theorem mem_left_of_mem_comp_of_rank_lt (N : RankedQuiverNetwork R V ι)

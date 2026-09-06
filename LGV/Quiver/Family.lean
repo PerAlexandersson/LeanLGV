@@ -156,6 +156,83 @@ theorem mem_swapSignedFamilyAt_right [Monoid R]
     vertices_castSinkPath] using
     N.mem_swapSecondAt_vertices (family.2 i) (family.2 j) hxi hxj
 
+theorem vertices_swapSignedFamilyAt_of_ne [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j k : Fin n) (hij : i ≠ j) (x : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices)
+    (hki : k ≠ i) (hkj : k ≠ j) :
+    ((N.swapSignedFamilyAt family i j hij x hxi hxj).2 k).vertices =
+      (family.2 k).vertices := by
+  simp only [swapSignedFamilyAt, dif_neg hki, dif_neg hkj,
+    id_eq, vertices_castSinkPath]
+
+/-- A vertex above the swap rank in a swapped family path already belonged to
+the corresponding original path. -/
+theorem mem_original_of_mem_swapSignedFamilyAt_of_rank_lt [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j k : Fin n) (hij : i ≠ j) (x y : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices)
+    (hy : y ∈ ((N.swapSignedFamilyAt family i j hij x hxi hxj).2 k).vertices)
+    (hxy : N.rank x < N.rank y) : y ∈ (family.2 k).vertices := by
+  by_cases hki : k = i
+  · subst k
+    have hy' : y ∈ (N.swapFirstAt
+        (family.2 i) (family.2 j) hxi hxj).vertices := by
+      simpa only [swapSignedFamilyAt, if_pos rfl, dif_pos rfl,
+        dite_true, dite_false, id_eq, vertices_castSinkPath] using hy
+    exact N.mem_original_first_of_mem_swapFirstAt_of_rank_lt
+      (family.2 i) (family.2 j) hxi hxj hy' hxy
+  · by_cases hkj : k = j
+    · subst k
+      have hy' : y ∈ (N.swapSecondAt
+          (family.2 i) (family.2 j) hxi hxj).vertices := by
+        simpa only [swapSignedFamilyAt, if_neg hij.symm,
+          dif_neg hij.symm, if_pos rfl, dif_pos rfl, dite_true,
+          dite_false, id_eq, vertices_castSinkPath] using hy
+      exact N.mem_original_second_of_mem_swapSecondAt_of_rank_lt
+        (family.2 i) (family.2 j) hxi hxj hy' hxy
+    · have hvertices := N.vertices_swapSignedFamilyAt_of_ne
+        family i j k hij x hxi hxj hki hkj
+      exact hvertices ▸ hy
+
+/-- At the swap rank, membership in each indexed family path is unchanged. -/
+theorem mem_swapSignedFamilyAt_iff_of_rank_eq [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j k : Fin n) (hij : i ≠ j) (x y : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices)
+    (hrank : N.rank y = N.rank x) :
+    y ∈ ((N.swapSignedFamilyAt family i j hij x hxi hxj).2 k).vertices ↔
+      y ∈ (family.2 k).vertices := by
+  by_cases hki : k = i
+  · subst k
+    constructor
+    · intro hy
+      have hx := N.mem_swapSignedFamilyAt_left family i j hij x hxi hxj
+      have hxy := N.eq_of_mem_vertices_of_rank_eq _ hx hy hrank.symm
+      simpa [hxy] using hxi
+    · intro hy
+      have hxy := N.eq_of_mem_vertices_of_rank_eq (family.2 i) hxi hy hrank.symm
+      simpa [hxy] using
+        N.mem_swapSignedFamilyAt_left family i j hij x hxi hxj
+  · by_cases hkj : k = j
+    · subst k
+      constructor
+      · intro hy
+        have hx := N.mem_swapSignedFamilyAt_right family i j hij x hxi hxj
+        have hxy := N.eq_of_mem_vertices_of_rank_eq _ hx hy hrank.symm
+        simpa [hxy] using hxj
+      · intro hy
+        have hxy := N.eq_of_mem_vertices_of_rank_eq (family.2 j) hxj hy hrank.symm
+        simpa [hxy] using
+          N.mem_swapSignedFamilyAt_right family i j hij x hxi hxj
+    · rw [N.vertices_swapSignedFamilyAt_of_ne family i j k hij x hxi hxj hki hkj]
+
 /-- A family tail swap preserves its unsigned product weight. -/
 theorem familyWeight_swapSignedFamilyAt [CommMonoid R]
     (N : RankedQuiverNetwork R V (Fin n))
