@@ -87,6 +87,86 @@ theorem swapAtFirstCollision_twice [Monoid R]
   simpa [swapAtFirstCollision, i, j, x, hi', hj', hx'] using
     N.swapSignedFamilyAt_twice family i j hij x hxi hxj
 
+theorem swapAtFirstCollision_ne [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (hbad : ¬N.SignedVertexDisjoint family) :
+    N.swapAtFirstCollision family hbad ≠ family := by
+  let i := N.firstCollisionLeft family hbad
+  let j := N.firstCollisionRight family hbad
+  have hij : i ≠ j := (N.firstCollisionLeft_lt_right family hbad).ne
+  intro heq
+  have hperm := congrArg (fun f => f.1 i) heq
+  have hji : j = i := family.1.injective (by
+    simpa [swapAtFirstCollision, i, j, swapSignedFamilyAt,
+      Equiv.Perm.mul_apply] using hperm)
+  exact hij hji.symm
+
+theorem firstCollisionSwap_involutive [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (b : {family : N.toFinitePathNetwork.SignedPathFamily //
+      ¬N.SignedVertexDisjoint family}) :
+    N.firstCollisionSwap (N.firstCollisionSwap b) = b := by
+  apply Subtype.ext
+  exact N.swapAtFirstCollision_twice b.1 b.2
+
+theorem det_pathMatrix_eq_sum_signedVertexDisjoint [CommRing R]
+    (N : RankedQuiverNetwork R V (Fin n)) :
+    Matrix.det N.pathMatrix =
+      ∑ family : {family : N.toFinitePathNetwork.SignedPathFamily //
+        N.SignedVertexDisjoint family},
+        N.toFinitePathNetwork.signedFamilyWeight family.1 := by
+  let swap := N.firstCollisionSwap
+  apply FinitePathNetwork.det_matrix_eq_sum_goodFamilies_of_bad_involution
+    N.toFinitePathNetwork N.SignedVertexDisjoint swap
+  · intro b
+    exact N.toFinitePathNetwork.signedFamilyWeight_add_eq_zero_of_swap_eq_neg
+      (N.signedFamilyWeight_swapAtFirstCollision b.1 b.2)
+  · intro b _ hb
+    apply N.swapAtFirstCollision_ne b.1 b.2
+    exact congrArg Subtype.val hb
+  · intro b
+    exact N.firstCollisionSwap_involutive b
+
+def orderedCancellationCertificate [CommRing R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (hcross : FinitePathNetwork.HasTwoPathObstruction
+      N.toFinitePathNetwork (fun p q => VertexDisjoint p q)) :
+    FinitePathNetwork.OrderedCancellationCertificate N.toFinitePathNetwork :=
+  { Disjoint := fun p q => VertexDisjoint p q
+    decidable := N.instDecidablePredSignedVertexDisjoint
+    hcross := hcross
+    swap := N.firstCollisionSwap
+    weight_swap := fun b => N.signedFamilyWeight_swapAtFirstCollision b.1 b.2
+    ne_fixed_of_weight_ne_zero := fun b _ => by
+      intro hb
+      apply N.swapAtFirstCollision_ne b.1 b.2
+      exact congrArg Subtype.val hb
+    involutive := N.firstCollisionSwap_involutive }
+
+theorem det_pathMatrix_eq_sum_vertexDisjoint [CommRing R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (hcross : FinitePathNetwork.HasTwoPathObstruction
+      N.toFinitePathNetwork (fun p q => VertexDisjoint p q)) :
+    Matrix.det N.pathMatrix =
+      ∑ family : {family : N.toFinitePathNetwork.SignedPathFamily //
+        N.SignedVertexDisjoint family},
+        N.toFinitePathNetwork.familyWeight family.1.2 := by
+  let C := N.orderedCancellationCertificate hcross
+  letI := N.instDecidablePredSignedVertexDisjoint
+  convert C.det_eq_sum_pairwiseDisjoint using 1 <;> rfl
+
+theorem det_pathMatrix_nonneg [CommRing R] [LinearOrder R]
+    [IsStrictOrderedRing R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (hcross : FinitePathNetwork.HasTwoPathObstruction
+      N.toFinitePathNetwork (fun p q => VertexDisjoint p q))
+    (hweight : ∀ {a b : V} (e : a ⟶ b), 0 ≤ N.edgeWeight e) :
+    0 ≤ Matrix.det N.pathMatrix := by
+  apply FinitePathNetwork.OrderedCancellationCertificate.det_nonneg
+    (N.orderedCancellationCertificate hcross)
+  exact N.pathWeight_nonneg hweight
+
 end RankedQuiverNetwork
 
 end

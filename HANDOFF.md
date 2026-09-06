@@ -22,6 +22,11 @@ Last updated: 2026-09-06.
   now begins the canonical bad-family cancellation package with
   `firstCollisionSwap`, signed-weight negation, and
   `swapAtFirstCollision_twice`; its focused build is warning-free.
+- `LGV/Quiver/LGV.lean` now also provides the weighted determinant sum over
+  vertex-disjoint signed families, an ordered-cancellation certificate, the
+  unsigned ordered determinant identity, and determinant nonnegativity from
+  nonnegative edge weights. Focused `LGV.Quiver.LGV` and umbrella `LGV` builds
+  both pass warning-free.
 - Branch `feat/quiver-lindstrom-gessel-viennot` owns new generic graph-backend
   modules and their umbrella import. `/root` acquired the sole serialized
   Lean/Lake batch-build slot at 16:10 UTC after confirming that only unrelated
