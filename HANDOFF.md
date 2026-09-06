@@ -16,6 +16,12 @@ Last updated: 2026-09-06.
   review. Aristotle receives only small isolated theorem
   obligations after the public graph API is fixed; all suggestions remain
   advisory and require a local warning-free rebuild.
+- The dependent family involution blocker is now closed in `LGV/Quiver/Family.lean`:
+  sink-label casts, cast-compatible two-path swaps, exact path accessors, and
+  `swapSignedFamilyAt_twice` all compile without warnings. `LGV/Quiver/LGV.lean`
+  now begins the canonical bad-family cancellation package with
+  `firstCollisionSwap`, signed-weight negation, and
+  `swapAtFirstCollision_twice`; its focused build is warning-free.
 - Branch `feat/quiver-lindstrom-gessel-viennot` owns new generic graph-backend
   modules and their umbrella import. `/root` acquired the sole serialized
   Lean/Lake batch-build slot at 16:10 UTC after confirming that only unrelated

@@ -39,6 +39,32 @@ def castSinkPath (N : RankedQuiverNetwork R V (Fin n))
   p.cast rfl (congrArg N.sink h)
 
 omit [Fintype V] [∀ a b : V, Fintype (a ⟶ b)] in
+@[simp] theorem castSinkPath_rfl
+    (N : RankedQuiverNetwork R V (Fin n))
+    {i j : Fin n} (p : Quiver.Path (N.source i) (N.sink j)) :
+    N.castSinkPath rfl p = p := by
+  simp [castSinkPath]
+
+omit [Fintype V] [∀ a b : V, Fintype (a ⟶ b)] in
+theorem castSinkPath_trans
+    (N : RankedQuiverNetwork R V (Fin n))
+    {i j k l : Fin n} (hjk : j = k) (hkl : k = l)
+    (p : Quiver.Path (N.source i) (N.sink j)) :
+    N.castSinkPath hkl (N.castSinkPath hjk p) =
+      N.castSinkPath (hjk.trans hkl) p := by
+  subst k
+  subst l
+  simp
+
+omit [Fintype V] [∀ a b : V, Fintype (a ⟶ b)] in
+theorem castSinkPath_heq
+    (N : RankedQuiverNetwork R V (Fin n))
+    {i j k : Fin n} (h : j = k)
+    (p : Quiver.Path (N.source i) (N.sink j)) :
+    N.castSinkPath h p ≍ p :=
+  Quiver.Path.cast_heq rfl (congrArg N.sink h) p
+
+omit [Fintype V] [∀ a b : V, Fintype (a ⟶ b)] in
 @[simp] theorem weight_castSinkPath [Monoid R]
     (N : RankedQuiverNetwork R V (Fin n))
     {i j k : Fin n} (h : j = k)
@@ -57,6 +83,61 @@ omit [Fintype V] [∀ a b : V, Fintype (a ⟶ b)] in
   subst k
   simp [castSinkPath]
 
+omit [Fintype V] [∀ a b : V, Fintype (a ⟶ b)] in
+/-- Tail swapping commutes with changing the two sink labels. -/
+theorem swapFirstAt_castSinkPaths
+    (N : RankedQuiverNetwork R V (Fin n))
+    {s t t' u v v' : Fin n} {z : V}
+    (ht : t = t') (hv : v = v')
+    (p : Quiver.Path (N.source s) (N.sink t))
+    (q : Quiver.Path (N.source u) (N.sink v))
+    (hzp : z ∈ p.vertices) (hzq : z ∈ q.vertices)
+    (hzp' : z ∈ (N.castSinkPath ht p).vertices)
+    (hzq' : z ∈ (N.castSinkPath hv q).vertices) :
+    N.swapFirstAt (N.castSinkPath ht p) (N.castSinkPath hv q) hzp' hzq' =
+      N.castSinkPath hv (N.swapFirstAt p q hzp hzq) := by
+  cases ht
+  cases hv
+  simp [castSinkPath]
+
+omit [Fintype V] [∀ a b : V, Fintype (a ⟶ b)] in
+theorem swapSecondAt_castSinkPaths
+    (N : RankedQuiverNetwork R V (Fin n))
+    {s t t' u v v' : Fin n} {z : V}
+    (ht : t = t') (hv : v = v')
+    (p : Quiver.Path (N.source s) (N.sink t))
+    (q : Quiver.Path (N.source u) (N.sink v))
+    (hzp : z ∈ p.vertices) (hzq : z ∈ q.vertices)
+    (hzp' : z ∈ (N.castSinkPath ht p).vertices)
+    (hzq' : z ∈ (N.castSinkPath hv q).vertices) :
+    N.swapSecondAt (N.castSinkPath ht p) (N.castSinkPath hv q) hzp' hzq' =
+      N.castSinkPath ht (N.swapSecondAt p q hzp hzq) := by
+  cases ht
+  cases hv
+  simp [castSinkPath]
+
+/-- The sink-label equality used by the left branch of a family swap. -/
+def swapLeftSinkEq [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) : family.1 j = (family.1 * Equiv.swap i j) i := by
+  simp [Equiv.Perm.mul_apply]
+
+/-- The sink-label equality used by the right branch of a family swap. -/
+def swapRightSinkEq [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) : family.1 i = (family.1 * Equiv.swap i j) j := by
+  simp [Equiv.Perm.mul_apply]
+
+/-- Away from the swapped indices, the sink label is unchanged. -/
+def swapOtherSinkEq [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j k : Fin n) (hki : k ≠ i) (hkj : k ≠ j) :
+    family.1 k = (family.1 * Equiv.swap i j) k := by
+  simp [Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne hki hkj]
+
 /-- Swap two tails in a signed path family at a specified common vertex. -/
 def swapSignedFamilyAt [Monoid R]
     (N : RankedQuiverNetwork R V (Fin n))
@@ -72,19 +153,18 @@ def swapSignedFamilyAt [Monoid R]
   · subst k
     change Quiver.Path (N.source i)
       (N.sink ((family.1 * Equiv.swap i j) i))
-    exact N.castSinkPath (by simp [Equiv.Perm.mul_apply])
+    exact N.castSinkPath (N.swapLeftSinkEq family i j)
       (N.swapFirstAt (family.2 i) (family.2 j) hxi hxj)
   · by_cases hkj : k = j
     · subst k
       change Quiver.Path (N.source j)
         (N.sink ((family.1 * Equiv.swap i j) j))
-      exact N.castSinkPath (by simp [Equiv.Perm.mul_apply])
+      exact N.castSinkPath (N.swapRightSinkEq family i j)
         (N.swapSecondAt (family.2 i) (family.2 j) hxi hxj)
     · change Quiver.Path (N.source k)
         (N.sink ((family.1 * Equiv.swap i j) k))
-      exact N.castSinkPath (by
-        simp [Equiv.Perm.mul_apply,
-          Equiv.swap_apply_of_ne_of_ne hki hkj]) (family.2 k)
+      exact N.castSinkPath (N.swapOtherSinkEq family i j k hki hkj)
+        (family.2 k)
 
 @[simp] theorem swapSignedFamilyAt_perm [Monoid R]
     (N : RankedQuiverNetwork R V (Fin n))
@@ -95,6 +175,40 @@ def swapSignedFamilyAt [Monoid R]
     (N.swapSignedFamilyAt family i j hij x hxi hxj).1 =
       family.1 * Equiv.swap i j :=
   rfl
+
+theorem swapSignedFamilyAt_path_left [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (x : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices) :
+    (N.swapSignedFamilyAt family i j hij x hxi hxj).2 i =
+      N.castSinkPath (N.swapLeftSinkEq family i j)
+        (N.swapFirstAt (family.2 i) (family.2 j) hxi hxj) := by
+  simp only [swapSignedFamilyAt, dite_true, id_eq]
+
+theorem swapSignedFamilyAt_path_right [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (x : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices) :
+    (N.swapSignedFamilyAt family i j hij x hxi hxj).2 j =
+      N.castSinkPath (N.swapRightSinkEq family i j)
+        (N.swapSecondAt (family.2 i) (family.2 j) hxi hxj) := by
+  simp only [swapSignedFamilyAt, dif_neg hij.symm, dite_true, id_eq]
+
+theorem swapSignedFamilyAt_path_of_ne [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j k : Fin n) (hij : i ≠ j) (x : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices)
+    (hki : k ≠ i) (hkj : k ≠ j) :
+    (N.swapSignedFamilyAt family i j hij x hxi hxj).2 k =
+      N.castSinkPath (N.swapOtherSinkEq family i j k hki hkj)
+        (family.2 k) := by
+  simp only [swapSignedFamilyAt, dif_neg hki, dif_neg hkj, id_eq]
 
 @[simp] theorem swapSignedFamilyAt_weight_left [Monoid R]
     (N : RankedQuiverNetwork R V (Fin n))
@@ -155,6 +269,102 @@ theorem mem_swapSignedFamilyAt_right [Monoid R]
     if_pos rfl, dif_pos rfl, dite_true, dite_false, id_eq,
     vertices_castSinkPath] using
     N.mem_swapSecondAt_vertices (family.2 i) (family.2 j) hxi hxj
+
+/-- Swapping the two paths produced by a family tail swap restores the first
+path, up to its required sink-label cast. -/
+theorem swapFirstAt_swapSignedFamilyAt [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (x : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices) :
+    N.swapFirstAt
+        ((N.swapSignedFamilyAt family i j hij x hxi hxj).2 i)
+        ((N.swapSignedFamilyAt family i j hij x hxi hxj).2 j)
+        (N.mem_swapSignedFamilyAt_left family i j hij x hxi hxj)
+        (N.mem_swapSignedFamilyAt_right family i j hij x hxi hxj) =
+      N.castSinkPath (N.swapRightSinkEq family i j)
+        (N.swapFirstAt
+          (N.swapFirstAt (family.2 i) (family.2 j) hxi hxj)
+          (N.swapSecondAt (family.2 i) (family.2 j) hxi hxj)
+          (N.mem_swapFirstAt_vertices (family.2 i) (family.2 j) hxi hxj)
+          (N.mem_swapSecondAt_vertices (family.2 i) (family.2 j) hxi hxj)) := by
+  simpa only [swapSignedFamilyAt, dite_true, dif_neg hij.symm, id_eq] using
+    N.swapFirstAt_castSinkPaths
+      (N.swapLeftSinkEq family i j) (N.swapRightSinkEq family i j)
+      (N.swapFirstAt (family.2 i) (family.2 j) hxi hxj)
+      (N.swapSecondAt (family.2 i) (family.2 j) hxi hxj)
+      (N.mem_swapFirstAt_vertices (family.2 i) (family.2 j) hxi hxj)
+      (N.mem_swapSecondAt_vertices (family.2 i) (family.2 j) hxi hxj)
+      _ _
+
+/-- Swapping the two paths produced by a family tail swap restores the second
+path, up to its required sink-label cast. -/
+theorem swapSecondAt_swapSignedFamilyAt [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (x : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices) :
+    N.swapSecondAt
+        ((N.swapSignedFamilyAt family i j hij x hxi hxj).2 i)
+        ((N.swapSignedFamilyAt family i j hij x hxi hxj).2 j)
+        (N.mem_swapSignedFamilyAt_left family i j hij x hxi hxj)
+        (N.mem_swapSignedFamilyAt_right family i j hij x hxi hxj) =
+      N.castSinkPath (N.swapLeftSinkEq family i j)
+        (N.swapSecondAt
+          (N.swapFirstAt (family.2 i) (family.2 j) hxi hxj)
+          (N.swapSecondAt (family.2 i) (family.2 j) hxi hxj)
+          (N.mem_swapFirstAt_vertices (family.2 i) (family.2 j) hxi hxj)
+          (N.mem_swapSecondAt_vertices (family.2 i) (family.2 j) hxi hxj)) := by
+  simpa only [swapSignedFamilyAt, dite_true, dif_neg hij.symm, id_eq] using
+    N.swapSecondAt_castSinkPaths
+      (N.swapLeftSinkEq family i j) (N.swapRightSinkEq family i j)
+      (N.swapFirstAt (family.2 i) (family.2 j) hxi hxj)
+      (N.swapSecondAt (family.2 i) (family.2 j) hxi hxj)
+      (N.mem_swapFirstAt_vertices (family.2 i) (family.2 j) hxi hxj)
+      (N.mem_swapSecondAt_vertices (family.2 i) (family.2 j) hxi hxj)
+      _ _
+
+/-- Swapping the same two family tails twice at the same vertex restores the
+original signed path family. -/
+theorem swapSignedFamilyAt_twice [Monoid R]
+    (N : RankedQuiverNetwork R V (Fin n))
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (x : V)
+    (hxi : x ∈ (family.2 i).vertices)
+    (hxj : x ∈ (family.2 j).vertices) :
+    let swapped := N.swapSignedFamilyAt family i j hij x hxi hxj
+    N.swapSignedFamilyAt swapped i j hij x
+      (N.mem_swapSignedFamilyAt_left family i j hij x hxi hxj)
+      (N.mem_swapSignedFamilyAt_right family i j hij x hxi hxj) = family := by
+  let swapped := N.swapSignedFamilyAt family i j hij x hxi hxj
+  let hxi' := N.mem_swapSignedFamilyAt_left family i j hij x hxi hxj
+  let hxj' := N.mem_swapSignedFamilyAt_right family i j hij x hxi hxj
+  let twice := N.swapSignedFamilyAt swapped i j hij x hxi' hxj'
+  change twice = family
+  rw [Sigma.ext_iff]
+  constructor
+  · simp [twice, swapped, mul_assoc]
+  · refine Function.hfunext rfl ?_
+    intro k k' hkk
+    have hk : k = k' := eq_of_heq hkk
+    subst k'
+    by_cases hki : k = i
+    · subst k
+      rw [N.swapSignedFamilyAt_path_left swapped i j hij x hxi' hxj']
+      apply HEq.trans (N.castSinkPath_heq _ _)
+      rw [N.swapFirstAt_swapSignedFamilyAt, N.swapFirstAt_twice]
+      exact N.castSinkPath_heq _ _
+    · by_cases hkj : k = j
+      · subst k
+        rw [N.swapSignedFamilyAt_path_right swapped i j hij x hxi' hxj']
+        apply HEq.trans (N.castSinkPath_heq _ _)
+        rw [N.swapSecondAt_swapSignedFamilyAt, N.swapSecondAt_twice]
+        exact N.castSinkPath_heq _ _
+      · rw [N.swapSignedFamilyAt_path_of_ne swapped i j k hij x hxi' hxj' hki hkj,
+            N.swapSignedFamilyAt_path_of_ne family i j k hij x hxi hxj hki hkj]
+        exact (N.castSinkPath_heq _ _).trans (N.castSinkPath_heq _ _)
 
 theorem vertices_swapSignedFamilyAt_of_ne [Monoid R]
     (N : RankedQuiverNetwork R V (Fin n))
