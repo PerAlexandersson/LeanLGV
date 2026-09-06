@@ -1,6 +1,6 @@
 # LeanLGV handoff
 
-Last updated: 2026-09-03.
+Last updated: 2026-09-06.
 
 ## Active graph backend
 
@@ -11,9 +11,9 @@ Last updated: 2026-09-03.
   `faabian/algebraic-combinatorics` is architecture-only background; no source
   or proof expression will be copied or translated into this Apache-2.0
   package.
-- Two Codex workers are conducting read-only local-API and mathematical audits.
-  Claude background session `261e35a8` owns a long read-only Lean/Mathlib
-  architecture review. Aristotle will receive only small isolated theorem
+- The two Codex read-only local-API and mathematical audits are complete.
+  Direct Claude process `13215` owns a long read-only Lean/Mathlib architecture
+  review. Aristotle receives only small isolated theorem
   obligations after the public graph API is fixed; all suggestions remain
   advisory and require a local warning-free rebuild.
 - Branch `feat/quiver-lindstrom-gessel-viennot` owns new generic graph-backend
@@ -25,6 +25,13 @@ Last updated: 2026-09-03.
   released the slot: `/tmp/LeanLGVFinitePaths.lean` proves finite exact-length,
   bounded, and strictly ranked path enumeration. `/root` reacquired the free
   slot at 16:16 UTC to integrate and verify the reviewed candidate.
+- Checkpoint `2485c2b` defines the finite ranked quiver network, path matrix,
+  vertex-disjointness predicate, tail-swap weight identity, and nonnegative
+  path weights. `LGV/Quiver/Split.lean` now proves no-repeat ranked paths,
+  unique canonical splitting, the two-path tail-swap involution, product-weight
+  and vertex-union preservation, and preservation of vertices above the swap
+  rank. Its focused warning-free build passed (1401 jobs). The next increment
+  is the bad-family collision selector and signed family involution.
 - Aristotle advisory project `603cd1b2-3b84-4479-a10c-e7c7b95ab4d1`, task
   `4987f6a2-b5eb-45f3-b514-58d370f3a4fd` (owner label
   `root-leanlgv-20260906`), was scoped only to the isolated two-path tail-swap
