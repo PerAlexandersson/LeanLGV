@@ -2,6 +2,36 @@
 
 Last updated: 2026-09-03.
 
+## Active graph backend
+
+- `/root` owns the clean-room Mathlib-quiver backend requested on 2026-09-06:
+  finite/path-finite ranked networks, vertex-disjoint path families, the
+  canonical first-intersection tail swap, and the resulting weighted LGV and
+  ordered nonnegativity theorems. The CC BY-NC implementation in
+  `faabian/algebraic-combinatorics` is architecture-only background; no source
+  or proof expression will be copied or translated into this Apache-2.0
+  package.
+- Two Codex workers are conducting read-only local-API and mathematical audits.
+  Claude background session `261e35a8` owns a long read-only Lean/Mathlib
+  architecture review. Aristotle will receive only small isolated theorem
+  obligations after the public graph API is fixed; all suggestions remain
+  advisory and require a local warning-free rebuild.
+- Branch `feat/quiver-lindstrom-gessel-viennot` owns new generic graph-backend
+  modules and their umbrella import. `/root` acquired the sole serialized
+  Lean/Lake batch-build slot at 16:10 UTC after confirming that only unrelated
+  long-lived LSP workers were active. One delegated worker may use that slot
+  for the initial isolated finite-path-enumeration scratch check; `/root` will
+  not run Lean concurrently. That warning-free scratch check completed and
+  released the slot: `/tmp/LeanLGVFinitePaths.lean` proves finite exact-length,
+  bounded, and strictly ranked path enumeration. `/root` reacquired the free
+  slot at 16:16 UTC to integrate and verify the reviewed candidate.
+- Aristotle advisory project `603cd1b2-3b84-4479-a10c-e7c7b95ab4d1`, task
+  `4987f6a2-b5eb-45f3-b514-58d370f3a4fd` (owner label
+  `root-leanlgv-20260906`), was scoped only to the isolated two-path tail-swap
+  weight identity. It failed remotely after about two minutes without a
+  diagnostic; Aristotle had warned that its Lean 4.28 preference does not
+  match this package's Lean 4.31.0-rc2 pin. No generated source was adopted.
+
 ## Active extraction
 
 - This is a new standalone package for the reusable LGV kernel formerly embedded
