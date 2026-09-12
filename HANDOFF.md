@@ -4,18 +4,18 @@ Last updated: 2026-09-12.
 
 ## Resource foundation
 
-- **Active issue #626:** isolated branch `feat/resource-family-swap` at
-  `743391c` contains checked generic sink casts, explicit shared-witness family
-  swapping, exact permutation/path/resource projections, family-weight
-  preservation, and signed-weight negation. Its focused build passes with
-  1,396 jobs, and representative axiom audits contain only `propext`,
-  `Classical.choice`, and `Quot.sound`. It is not merged into local `main`
-  because the final double-swap equality remains open. The obstruction is now
-  localized to transporting the local involution through the two dependent
-  sink casts; do not replace it with a certificate field or assumption. A
-  clean continuation should expose the raw-index family swap separately from
-  the `SharedResourceWitness` wrapper, then port the already checked quiver
-  double-swap proof shape.
+- **Issue #626 is complete:** feature checkpoint `2873ed6`, now merged into
+  local `main`, exposes both raw-index and `SharedResourceWitness` family
+  swaps. Checked witnesses prove exact permutation/path/resource projections,
+  family-weight preservation, signed-weight negation, and exact double-swap
+  equality (`swapSignedFamilyAtRaw_twice` and `swapSignedFamilyAt_twice`). The
+  focused build passes with 1,396 jobs and no warnings; umbrella and full
+  builds pass with 1,415 jobs. Representative axiom audits contain only
+  `propext`, `Classical.choice`, and `Quot.sound`.
+- **Next issue #627:** define a coherent bad-family witness selector and prove
+  that it is invariant under `swapSignedFamilyAt`; then package the resulting
+  sign-reversing involution for the abstract cancellation interface. Keep the
+  selector independent of any graph order or path serialization.
 
 - Issue PerAlexandersson/RealRooted#618 adds `ResourcePathNetwork`, extending
   the existing finite weighted network with a finite resource support for each

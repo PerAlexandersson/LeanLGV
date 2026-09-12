@@ -19,6 +19,9 @@ The package deliberately separates two concerns:
   it to the abstract pairwise-disjoint predicate consumed by `LGV.Ordered`.
 - `LGV.Resource.Swap` specifies a local involutive endpoint swap at a shared
   resource, including preservation of the shared resource and weight product.
+- `LGV.Resource.FamilySwap` lifts that local certificate to signed families,
+  proving exact involutivity and sign reversal at an explicit shared-resource
+  witness.
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.
