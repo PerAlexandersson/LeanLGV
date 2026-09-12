@@ -29,6 +29,13 @@ Last updated: 2026-09-12.
   1,394 jobs; combined umbrella and full builds pass with 1,413 jobs.
   Representative axiom audits again contain only `propext`,
   `Classical.choice`, and `Quot.sound`.
+- Issue PerAlexandersson/RealRooted#621 introduces the minimal abstract local
+  swap interface. `ResourceSwapResult` exchanges path endpoints while
+  preserving the chosen shared resource and the product of path weights;
+  `ResourceSwapCertificate` requires that repeating the same swap restores
+  both paths. No generic network is claimed to supply this data automatically.
+  Its focused build passes with 1,392 jobs; umbrella and full builds pass with
+  1,414 jobs. Its accessor axiom audits contain only `propext` and `Quot.sound`.
 
 ## Landmark finalization audit
 

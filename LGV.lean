@@ -3,6 +3,7 @@ import LGV.Ordered
 import LGV.Resource.Basic
 import LGV.Resource.Disjoint
 import LGV.Resource.Family
+import LGV.Resource.Swap
 import LGV.Quiver.Network
 import LGV.Quiver.Path
 import LGV.Quiver.Split

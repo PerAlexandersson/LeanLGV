@@ -17,6 +17,8 @@ The package deliberately separates two concerns:
   concrete shared-resource witness.
 - `LGV.Resource.Family` lifts that relation to signed path families and bridges
   it to the abstract pairwise-disjoint predicate consumed by `LGV.Ordered`.
+- `LGV.Resource.Swap` specifies a local involutive endpoint swap at a shared
+  resource, including preservation of the shared resource and weight product.
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.
