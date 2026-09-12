@@ -24,6 +24,9 @@ The package deliberately separates two concerns:
   witness.
 - `LGV.Resource.Cancellation` turns a coherent shared-resource selector into a
   fixed-point-free, sign-reversing involution on bad signed families.
+- `LGV.Resource.Ordered` adds an ordered two-path obstruction to that
+  cancellation data, yielding the unsigned determinant identity and
+  determinant nonnegativity.
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.

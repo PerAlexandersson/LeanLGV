@@ -21,9 +21,19 @@ Last updated: 2026-09-12.
   1,397 jobs and no warnings; umbrella and full builds pass with 1,416 jobs.
   Representative axiom audits contain only `propext`, `Classical.choice`, and
   `Quot.sound`.
-- **Next issue #623:** combine the resource cancellation certificate with an
-  ordered two-path obstruction, then expose the unsigned determinant identity
-  and nonnegative determinant endpoint without adding model-specific choices.
+- **Issue #623 is complete:** checkpoint `d7bb064`, now merged into local
+  `main`, converts `ResourceFamilyCancellationCertificate` plus an ordered
+  two-path obstruction into `OrderedCancellationCertificate`. Its checked
+  endpoints are `det_matrix_eq_sum_resourceDisjoint` and
+  `det_matrix_nonneg`; the latter assumes nonnegative path weights because the
+  abstract resource network has no edge representation. The focused build
+  passes with 1,398 jobs and no warnings; umbrella and full builds pass with
+  1,417 jobs. Representative axiom audits contain only `propext`,
+  `Classical.choice`, and `Quot.sound`.
+- The generic resource cancellation chain #621 -> #622 -> #623 is complete.
+  The next mathematical layer is the separately owned RealRooted Toeplitz/PF
+  adapter (#624 and #625), while standalone repository publication remains
+  tracked independently in #612.
 
 - Issue PerAlexandersson/RealRooted#618 adds `ResourcePathNetwork`, extending
   the existing finite weighted network with a finite resource support for each

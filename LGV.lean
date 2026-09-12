@@ -6,6 +6,7 @@ import LGV.Resource.Family
 import LGV.Resource.Swap
 import LGV.Resource.FamilySwap
 import LGV.Resource.Cancellation
+import LGV.Resource.Ordered
 import LGV.Quiver.Network
 import LGV.Quiver.Path
 import LGV.Quiver.Split
