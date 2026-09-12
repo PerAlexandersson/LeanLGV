@@ -4,6 +4,19 @@ Last updated: 2026-09-12.
 
 ## Resource foundation
 
+- **Active issue #626:** isolated branch `feat/resource-family-swap` at
+  `743391c` contains checked generic sink casts, explicit shared-witness family
+  swapping, exact permutation/path/resource projections, family-weight
+  preservation, and signed-weight negation. Its focused build passes with
+  1,396 jobs, and representative axiom audits contain only `propext`,
+  `Classical.choice`, and `Quot.sound`. It is not merged into local `main`
+  because the final double-swap equality remains open. The obstruction is now
+  localized to transporting the local involution through the two dependent
+  sink casts; do not replace it with a certificate field or assumption. A
+  clean continuation should expose the raw-index family swap separately from
+  the `SharedResourceWitness` wrapper, then port the already checked quiver
+  double-swap proof shape.
+
 - Issue PerAlexandersson/RealRooted#618 adds `ResourcePathNetwork`, extending
   the existing finite weighted network with a finite resource support for each
   path. It also supplies the `Uses` membership predicate, finite-set and
