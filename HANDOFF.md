@@ -16,6 +16,12 @@ Last updated: 2026-09-12.
   focused resource build passed with 1,390 jobs; umbrella and full builds pass
   with 1,411 jobs. Representative axiom audits contain only `propext`,
   `Classical.choice`, and `Quot.sound`.
+- Issue PerAlexandersson/RealRooted#619 adds the two-path disjointness layer.
+  Its checked witnesses identify non-disjointness with a concrete shared
+  resource, characterize disjointness by excluding shared resources, and prove
+  symmetry. The focused build passes with 1,391 jobs; combined umbrella and
+  full builds pass with 1,412 jobs. Representative axiom audits again contain
+  only `propext`, `Classical.choice`, and `Quot.sound`.
 
 ## Landmark finalization audit
 

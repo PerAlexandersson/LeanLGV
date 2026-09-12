@@ -13,6 +13,8 @@ The package deliberately separates two concerns:
   nonnegative-determinant corollary for nonnegative weights.
 - `LGV.Resource.Basic` extends a finite path network with the finite set of
   resources used by each path, independently of any concrete graph model.
+- `LGV.Resource.Disjoint` identifies failure of resource-disjointness with a
+  concrete shared-resource witness.
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.
