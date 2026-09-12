@@ -12,10 +12,18 @@ Last updated: 2026-09-12.
   focused build passes with 1,396 jobs and no warnings; umbrella and full
   builds pass with 1,415 jobs. Representative axiom audits contain only
   `propext`, `Classical.choice`, and `Quot.sound`.
-- **Next issue #627:** define a coherent bad-family witness selector and prove
-  that it is invariant under `swapSignedFamilyAt`; then package the resulting
-  sign-reversing involution for the abstract cancellation interface. Keep the
-  selector independent of any graph order or path serialization.
+- **Issue #627 is complete:** checkpoint `2878317`, now merged into local
+  `main`, defines the honest-input `ResourceCollisionSelector` with explicit
+  left-index, right-index, and resource coherence laws. It supplies the
+  subtype-valued `badFamilySwap`, exact involutivity, signed-weight negation, a
+  stronger unconditional no-fixed-point theorem, and the bundled
+  `ResourceFamilyCancellationCertificate`. The focused build passes with
+  1,397 jobs and no warnings; umbrella and full builds pass with 1,416 jobs.
+  Representative axiom audits contain only `propext`, `Classical.choice`, and
+  `Quot.sound`.
+- **Next issue #623:** combine the resource cancellation certificate with an
+  ordered two-path obstruction, then expose the unsigned determinant identity
+  and nonnegative determinant endpoint without adding model-specific choices.
 
 - Issue PerAlexandersson/RealRooted#618 adds `ResourcePathNetwork`, extending
   the existing finite weighted network with a finite resource support for each

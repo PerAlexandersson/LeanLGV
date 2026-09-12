@@ -22,6 +22,8 @@ The package deliberately separates two concerns:
 - `LGV.Resource.FamilySwap` lifts that local certificate to signed families,
   proving exact involutivity and sign reversal at an explicit shared-resource
   witness.
+- `LGV.Resource.Cancellation` turns a coherent shared-resource selector into a
+  fixed-point-free, sign-reversing involution on bad signed families.
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.
