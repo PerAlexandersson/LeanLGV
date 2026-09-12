@@ -14,6 +14,8 @@ The package deliberately separates two concerns:
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.
+- `LGV.Quiver.Examples` gives a five-vertex end-to-end regression whose ordered
+  crossing obstruction yields determinant nonnegativity.
 
 The core does not prescribe a graph representation. A concrete development may
 use graph paths and a first-intersection tail swap, lattice paths, or any other
@@ -40,5 +42,6 @@ development. The standalone ranked-quiver landmark is now complete: the main
 endpoints are
 `RankedQuiverNetwork.det_pathMatrix_eq_sum_signedVertexDisjoint`,
 `RankedQuiverNetwork.det_pathMatrix_eq_sum_vertexDisjoint`, and
-`RankedQuiverNetwork.det_pathMatrix_nonneg`. Local verification and API
+`RankedQuiverNetwork.det_pathMatrix_nonneg`; the concrete consumer witness is
+`RankedQuiverExample.determinant_nonneg`. Local verification and API
 stabilization are tracked in `HANDOFF.md`.

@@ -12,21 +12,25 @@ Last updated: 2026-09-12.
   nonnegative determinant theorem. The principal final witnesses are
   `RankedQuiverNetwork.firstCollisionSwap_involutive`,
   `RankedQuiverNetwork.det_pathMatrix_eq_sum_vertexDisjoint`, and
-  `RankedQuiverNetwork.det_pathMatrix_nonneg`.
-- A fresh `lake-workspace build LGV` passed on 2026-09-12 with 1,407 jobs.
+  `RankedQuiverNetwork.det_pathMatrix_nonneg`. The concrete landmark
+  regression is `RankedQuiverExample.determinant_nonneg` in
+  `LGV/Quiver/Examples.lean`.
+- Fresh `lake-workspace build LGV` and full `lake-workspace build` checks
+  passed on 2026-09-12 with 1,410 jobs.
   Direct axiom audits of the abstract determinant expansion, ordered
   cancellation certificate, quiver involution, signed and unsigned quiver
   identities, and nonnegativity theorem report exactly `propext`,
   `Classical.choice`, and `Quot.sound`. Static scans find no `sorry`, `admit`,
   source `axiom`, prohibited tactic, option override, or overlong source line.
-- Local `main` is fast-forwarded through the completed quiver checkpoint and
-  this audit. The repository has no configured remote or upstream branch, and
+- Local `main` is fast-forwarded through the completed quiver checkpoint,
+  matrix reindexing theorem, and concrete five-vertex ranked-quiver example.
+  The repository has no configured remote or upstream branch, and
   `PerAlexandersson/LeanLGV` does not currently exist on GitHub. Remote
   publication, remote synchronization, and CI therefore remain a separately
   authorized repository-administration task; do not invent or add a remote.
-- Next independent increments are a matrix-level reindex/submatrix theorem and
-  a tiny end-to-end ranked-quiver regression example. Resource-disjointness and
-  the RealRooted Toeplitz adapter belong in later, separately owned layers.
+- Next independent increments are resource-disjointness foundations and then
+  resource cancellation. The RealRooted Toeplitz/PF adapter belongs in a later,
+  separately owned layer.
 
 ## Finite-network foundation checkpoint
 
@@ -39,6 +43,18 @@ Last updated: 2026-09-12.
 - Local branch `feat/finite-reindex-submatrix` is merged into local `main` at
   its verified checkpoint. No remote is configured, so it cannot be pushed
   until #612 is explicitly authorized.
+
+## Concrete landmark regression
+
+- Issue PerAlexandersson/RealRooted#614 adds a checked five-vertex ranked
+  quiver with two sources, a forced common middle vertex, and two sinks.
+  `RankedQuiverExample.two_path_obstruction` proves the ordered crossing
+  obstruction, and `RankedQuiverExample.determinant_nonneg` invokes the full
+  ranked-quiver LGV endpoint with unit nonnegative edge weights.
+- The focused example build passed with 1,408 jobs, and umbrella/full builds
+  passed with 1,410 jobs. Direct axiom audits of both path-intersection lemmas,
+  the obstruction, and determinant nonnegativity report exactly `propext`,
+  `Classical.choice`, and `Quot.sound`.
 
 ## Active graph backend
 
