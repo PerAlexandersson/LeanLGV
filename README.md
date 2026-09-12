@@ -11,6 +11,8 @@ The package deliberately separates two concerns:
 - `LGV.Ordered` turns an ordered two-path obstruction and a cancellation
   certificate into an unsigned sum over pairwise-disjoint path families, with a
   nonnegative-determinant corollary for nonnegative weights.
+- `LGV.Resource.Basic` extends a finite path network with the finite set of
+  resources used by each path, independently of any concrete graph model.
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.

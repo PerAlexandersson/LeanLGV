@@ -2,6 +2,21 @@
 
 Last updated: 2026-09-12.
 
+## Resource foundation
+
+- Issue PerAlexandersson/RealRooted#618 adds `ResourcePathNetwork`, extending
+  the existing finite weighted network with a finite resource support for each
+  path. It also supplies the `Uses` membership predicate, finite-set and
+  support-extensionality witnesses, and resource-preserving source/sink
+  reindexing.
+- The new API stores supports directly as `Finset`s. The frozen predecessor
+  stored lists but used only membership; serial path order is therefore not
+  imposed on the generic package.
+- `/root` remains the sole integration and serialized Lake-build owner. The
+  focused resource build passed with 1,390 jobs; umbrella and full builds pass
+  with 1,411 jobs. Representative axiom audits contain only `propext`,
+  `Classical.choice`, and `Quot.sound`.
+
 ## Landmark finalization audit
 
 - The standalone package is the canonical home for the independent LGV
