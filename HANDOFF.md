@@ -22,6 +22,13 @@ Last updated: 2026-09-12.
   symmetry. The focused build passes with 1,391 jobs; combined umbrella and
   full builds pass with 1,412 jobs. Representative axiom audits again contain
   only `propext`, `Classical.choice`, and `Quot.sound`.
+- Issue PerAlexandersson/RealRooted#620 adds signed-family resource
+  disjointness, a concrete `SharedResourceWitness`, extraction of such a
+  witness from every bad family, and the exact bridge to
+  `FinitePathNetwork.SignedPairwiseDisjoint`. Its focused build passes with
+  1,394 jobs; combined umbrella and full builds pass with 1,413 jobs.
+  Representative axiom audits again contain only `propext`,
+  `Classical.choice`, and `Quot.sound`.
 
 ## Landmark finalization audit
 

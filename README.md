@@ -15,6 +15,8 @@ The package deliberately separates two concerns:
   resources used by each path, independently of any concrete graph model.
 - `LGV.Resource.Disjoint` identifies failure of resource-disjointness with a
   concrete shared-resource witness.
+- `LGV.Resource.Family` lifts that relation to signed path families and bridges
+  it to the abstract pairwise-disjoint predicate consumed by `LGV.Ordered`.
 - `LGV.Quiver` supplies a concrete finite ranked-quiver backend: finite path
   enumeration, canonical first-intersection tail swapping, the resulting
   sign-reversing involution, and weighted ordered LGV.
