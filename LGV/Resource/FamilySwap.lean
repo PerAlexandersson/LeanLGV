@@ -129,27 +129,294 @@ theorem ResourceSwapCertificate.swap_second_castSinkPaths
   subst v'
   rfl
 
+/-- The first output of a local swap depends only on its two input paths. -/
+theorem ResourceSwapCertificate.swap_first_congr
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    {s t u v : Fin n} {p p' : N.Path s t} {q q' : N.Path u v}
+    (resource : Resource) (hp : N.Uses p resource)
+    (hq : N.Uses q resource) (hp' : N.Uses p' resource)
+    (hq' : N.Uses q' resource) (hpath : p = p') (hqpath : q = q') :
+    (C.swap p q resource hp hq).first =
+      (C.swap p' q' resource hp' hq').first := by
+  subst p'
+  subst q'
+  rfl
+
+/-- The second output of a local swap depends only on its two input paths. -/
+theorem ResourceSwapCertificate.swap_second_congr
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    {s t u v : Fin n} {p p' : N.Path s t} {q q' : N.Path u v}
+    (resource : Resource) (hp : N.Uses p resource)
+    (hq : N.Uses q resource) (hp' : N.Uses p' resource)
+    (hq' : N.Uses q' resource) (hpath : p = p') (hqpath : q = q') :
+    (C.swap p q resource hp hq).second =
+      (C.swap p' q' resource hp' hq').second := by
+  subst p'
+  subst q'
+  rfl
+
+/-- Swap two explicitly indexed family paths at a specified shared resource. -/
+def ResourceSwapCertificate.swapSignedFamilyAtRaw
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (_hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource) :
+    N.toFinitePathNetwork.SignedPathFamily := by
+  refine ⟨family.1 * Equiv.swap i j, ?_⟩
+  intro k
+  by_cases hleft : k = i
+  · subst k
+    exact N.castSinkPath (N.swapLeftSinkEq family i j)
+      (C.swap (family.2 i) (family.2 j) resource hi hj).first
+  · by_cases hright : k = j
+    · subst k
+      exact N.castSinkPath (N.swapRightSinkEq family i j)
+        (C.swap (family.2 i) (family.2 j) resource hi hj).second
+    · exact N.castSinkPath
+        (N.swapOtherSinkEq family i j k hleft hright)
+        (family.2 k)
+
+@[simp] theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_perm
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource) :
+    (C.swapSignedFamilyAtRaw family i j hij resource hi hj).1 =
+      family.1 * Equiv.swap i j :=
+  rfl
+
+theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_path_left
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource) :
+    (C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 i =
+      N.castSinkPath (N.swapLeftSinkEq family i j)
+        (C.swap (family.2 i) (family.2 j) resource hi hj).first := by
+  simp only [swapSignedFamilyAtRaw, dite_true]
+
+theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_path_right
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource) :
+    (C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 j =
+      N.castSinkPath (N.swapRightSinkEq family i j)
+        (C.swap (family.2 i) (family.2 j) resource hi hj).second := by
+  simp only [swapSignedFamilyAtRaw, dif_neg hij.symm, dite_true]
+
+theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_path_of_ne
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j k : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource)
+    (hki : k ≠ i) (hkj : k ≠ j) :
+    (C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 k =
+      N.castSinkPath (N.swapOtherSinkEq family i j k hki hkj)
+        (family.2 k) := by
+  simp only [swapSignedFamilyAtRaw, dif_neg hki, dif_neg hkj]
+
+theorem ResourceSwapCertificate.uses_swapSignedFamilyAtRaw_left
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource) :
+    N.Uses ((C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 i)
+      resource := by
+  rw [C.swapSignedFamilyAtRaw_path_left family i j hij resource hi hj]
+  exact (N.uses_castSinkPath _ _ _).mpr
+    (C.swap (family.2 i) (family.2 j) resource hi hj).first_uses
+
+theorem ResourceSwapCertificate.uses_swapSignedFamilyAtRaw_right
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource) :
+    N.Uses ((C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 j)
+      resource := by
+  rw [C.swapSignedFamilyAtRaw_path_right family i j hij resource hi hj]
+  exact (N.uses_castSinkPath _ _ _).mpr
+    (C.swap (family.2 i) (family.2 j) resource hi hj).second_uses
+
+theorem ResourceSwapCertificate.swap_first_swapSignedFamilyAtRaw
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource)
+    (hi' : N.Uses
+      ((C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 i) resource)
+    (hj' : N.Uses
+      ((C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 j) resource) :
+    let swapped := C.swapSignedFamilyAtRaw family i j hij resource hi hj
+    (C.swap (swapped.2 i) (swapped.2 j) resource hi' hj').first =
+        N.castSinkPath (N.swapRightSinkEq family i j)
+          (C.swap
+            (C.swap (family.2 i) (family.2 j) resource hi hj).first
+            (C.swap (family.2 i) (family.2 j) resource hi hj).second
+            resource
+            (C.swap (family.2 i) (family.2 j) resource hi hj).first_uses
+            (C.swap (family.2 i) (family.2 j) resource hi hj).second_uses).first := by
+  dsimp only
+  have hleft := C.swapSignedFamilyAtRaw_path_left
+    family i j hij resource hi hj
+  have hright := C.swapSignedFamilyAtRaw_path_right
+    family i j hij resource hi hj
+  have hiCast : N.Uses
+      (N.castSinkPath (N.swapLeftSinkEq family i j)
+        (C.swap (family.2 i) (family.2 j) resource hi hj).first) resource := by
+    exact (N.uses_castSinkPath _ _ _).mpr
+      (C.swap (family.2 i) (family.2 j) resource hi hj).first_uses
+  have hjCast : N.Uses
+      (N.castSinkPath (N.swapRightSinkEq family i j)
+        (C.swap (family.2 i) (family.2 j) resource hi hj).second) resource := by
+    exact (N.uses_castSinkPath _ _ _).mpr
+      (C.swap (family.2 i) (family.2 j) resource hi hj).second_uses
+  calc
+    _ = (C.swap
+        (N.castSinkPath (N.swapLeftSinkEq family i j)
+          (C.swap (family.2 i) (family.2 j) resource hi hj).first)
+        (N.castSinkPath (N.swapRightSinkEq family i j)
+          (C.swap (family.2 i) (family.2 j) resource hi hj).second)
+        resource hiCast hjCast).first :=
+      C.swap_first_congr resource hi' hj' hiCast hjCast hleft hright
+    _ = _ := C.swap_first_castSinkPaths
+      (N.swapLeftSinkEq family i j) (N.swapRightSinkEq family i j)
+      (C.swap (family.2 i) (family.2 j) resource hi hj).first
+      (C.swap (family.2 i) (family.2 j) resource hi hj).second
+      resource
+      (C.swap (family.2 i) (family.2 j) resource hi hj).first_uses
+      (C.swap (family.2 i) (family.2 j) resource hi hj).second_uses
+      _ _
+
+theorem ResourceSwapCertificate.swap_second_swapSignedFamilyAtRaw
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource)
+    (hi' : N.Uses
+      ((C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 i) resource)
+    (hj' : N.Uses
+      ((C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 j) resource) :
+    let swapped := C.swapSignedFamilyAtRaw family i j hij resource hi hj
+    (C.swap (swapped.2 i) (swapped.2 j) resource hi' hj').second =
+        N.castSinkPath (N.swapLeftSinkEq family i j)
+          (C.swap
+            (C.swap (family.2 i) (family.2 j) resource hi hj).first
+            (C.swap (family.2 i) (family.2 j) resource hi hj).second
+            resource
+            (C.swap (family.2 i) (family.2 j) resource hi hj).first_uses
+            (C.swap (family.2 i) (family.2 j) resource hi hj).second_uses).second := by
+  dsimp only
+  have hleft := C.swapSignedFamilyAtRaw_path_left
+    family i j hij resource hi hj
+  have hright := C.swapSignedFamilyAtRaw_path_right
+    family i j hij resource hi hj
+  have hiCast : N.Uses
+      (N.castSinkPath (N.swapLeftSinkEq family i j)
+        (C.swap (family.2 i) (family.2 j) resource hi hj).first) resource := by
+    exact (N.uses_castSinkPath _ _ _).mpr
+      (C.swap (family.2 i) (family.2 j) resource hi hj).first_uses
+  have hjCast : N.Uses
+      (N.castSinkPath (N.swapRightSinkEq family i j)
+        (C.swap (family.2 i) (family.2 j) resource hi hj).second) resource := by
+    exact (N.uses_castSinkPath _ _ _).mpr
+      (C.swap (family.2 i) (family.2 j) resource hi hj).second_uses
+  calc
+    _ = (C.swap
+        (N.castSinkPath (N.swapLeftSinkEq family i j)
+          (C.swap (family.2 i) (family.2 j) resource hi hj).first)
+        (N.castSinkPath (N.swapRightSinkEq family i j)
+          (C.swap (family.2 i) (family.2 j) resource hi hj).second)
+        resource hiCast hjCast).second :=
+      C.swap_second_congr resource hi' hj' hiCast hjCast hleft hright
+    _ = _ := C.swap_second_castSinkPaths
+      (N.swapLeftSinkEq family i j) (N.swapRightSinkEq family i j)
+      (C.swap (family.2 i) (family.2 j) resource hi hj).first
+      (C.swap (family.2 i) (family.2 j) resource hi hj).second
+      resource
+      (C.swap (family.2 i) (family.2 j) resource hi hj).first_uses
+      (C.swap (family.2 i) (family.2 j) resource hi hj).second_uses
+      _ _
+
+/-- Repeating an explicitly indexed resource swap restores the signed family. -/
+theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_twice
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (i j : Fin n) (hij : i ≠ j) (resource : Resource)
+    (hi : N.Uses (family.2 i) resource)
+    (hj : N.Uses (family.2 j) resource) :
+    let swapped := C.swapSignedFamilyAtRaw family i j hij resource hi hj
+    C.swapSignedFamilyAtRaw swapped i j hij resource
+      (C.uses_swapSignedFamilyAtRaw_left
+        family i j hij resource hi hj)
+      (C.uses_swapSignedFamilyAtRaw_right
+        family i j hij resource hi hj) = family := by
+  let swapped := C.swapSignedFamilyAtRaw family i j hij resource hi hj
+  let hi' := C.uses_swapSignedFamilyAtRaw_left
+    family i j hij resource hi hj
+  let hj' := C.uses_swapSignedFamilyAtRaw_right
+    family i j hij resource hi hj
+  let twice := C.swapSignedFamilyAtRaw swapped i j hij resource hi' hj'
+  change twice = family
+  rw [Sigma.ext_iff]
+  constructor
+  · simp [twice, swapped, mul_assoc]
+  · refine Function.hfunext rfl ?_
+    intro k k' hkk
+    have hk : k = k' := eq_of_heq hkk
+    subst k'
+    by_cases hki : k = i
+    · subst k
+      rw [C.swapSignedFamilyAtRaw_path_left
+        swapped i j hij resource hi' hj']
+      apply HEq.trans (N.castSinkPath_heq _ _)
+      rw [C.swap_first_swapSignedFamilyAtRaw
+        family i j hij resource hi hj hi' hj', C.first_twice]
+      exact N.castSinkPath_heq _ _
+    · by_cases hkj : k = j
+      · subst k
+        rw [C.swapSignedFamilyAtRaw_path_right
+          swapped i j hij resource hi' hj']
+        apply HEq.trans (N.castSinkPath_heq _ _)
+        rw [C.swap_second_swapSignedFamilyAtRaw
+          family i j hij resource hi hj hi' hj', C.second_twice]
+        exact N.castSinkPath_heq _ _
+      · rw [C.swapSignedFamilyAtRaw_path_of_ne
+          swapped i j k hij resource hi' hj' hki hkj,
+          C.swapSignedFamilyAtRaw_path_of_ne
+            family i j k hij resource hi hj hki hkj]
+        exact (N.castSinkPath_heq _ _).trans (N.castSinkPath_heq _ _)
+
 /-- Swap the two paths selected by an explicit shared-resource witness. -/
 def ResourceSwapCertificate.swapSignedFamilyAt
     {N : ResourcePathNetwork R (Fin n) Resource}
     (C : ResourceSwapCertificate N)
     (family : N.toFinitePathNetwork.SignedPathFamily)
     (w : SharedResourceWitness N family) :
-    N.toFinitePathNetwork.SignedPathFamily := by
-  classical
-  refine ⟨family.1 * Equiv.swap w.left w.right, ?_⟩
-  intro k
-  by_cases hleft : k = w.left
-  · subst k
-    exact N.castSinkPath (N.swapLeftSinkEq family w.left w.right)
-      (C.localSwapAt w).first
-  · by_cases hright : k = w.right
-    · subst k
-      exact N.castSinkPath (N.swapRightSinkEq family w.left w.right)
-        (C.localSwapAt w).second
-    · exact N.castSinkPath
-        (N.swapOtherSinkEq family w.left w.right k hleft hright)
-        (family.2 k)
+    N.toFinitePathNetwork.SignedPathFamily :=
+  C.swapSignedFamilyAtRaw family w.left w.right w.left_ne_right w.resource
+    w.left_uses w.right_uses
 
 @[simp] theorem ResourceSwapCertificate.swapSignedFamilyAt_perm
     {N : ResourcePathNetwork R (Fin n) Resource}
@@ -168,7 +435,8 @@ theorem ResourceSwapCertificate.swapSignedFamilyAt_path_left
     (C.swapSignedFamilyAt family w).2 w.left =
       N.castSinkPath (N.swapLeftSinkEq family w.left w.right)
         (C.localSwapAt w).first := by
-  simp only [swapSignedFamilyAt, dite_true]
+  exact C.swapSignedFamilyAtRaw_path_left family w.left w.right
+    w.left_ne_right w.resource w.left_uses w.right_uses
 
 theorem ResourceSwapCertificate.swapSignedFamilyAt_path_right
     {N : ResourcePathNetwork R (Fin n) Resource}
@@ -178,8 +446,8 @@ theorem ResourceSwapCertificate.swapSignedFamilyAt_path_right
     (C.swapSignedFamilyAt family w).2 w.right =
       N.castSinkPath (N.swapRightSinkEq family w.left w.right)
         (C.localSwapAt w).second := by
-  simp only [swapSignedFamilyAt, dif_neg w.left_ne_right.symm,
-    dite_true]
+  exact C.swapSignedFamilyAtRaw_path_right family w.left w.right
+    w.left_ne_right w.resource w.left_uses w.right_uses
 
 theorem ResourceSwapCertificate.swapSignedFamilyAt_path_of_ne
     {N : ResourcePathNetwork R (Fin n) Resource}
@@ -191,7 +459,8 @@ theorem ResourceSwapCertificate.swapSignedFamilyAt_path_of_ne
       N.castSinkPath
         (N.swapOtherSinkEq family w.left w.right k hkleft hkright)
         (family.2 k) := by
-  simp only [swapSignedFamilyAt, dif_neg hkleft, dif_neg hkright]
+  exact C.swapSignedFamilyAtRaw_path_of_ne family w.left w.right k
+    w.left_ne_right w.resource w.left_uses w.right_uses hkleft hkright
 
 @[simp] theorem ResourceSwapCertificate.swapSignedFamilyAt_weight_left
     {N : ResourcePathNetwork R (Fin n) Resource}
@@ -200,7 +469,8 @@ theorem ResourceSwapCertificate.swapSignedFamilyAt_path_of_ne
     (w : SharedResourceWitness N family) :
     N.weight ((C.swapSignedFamilyAt family w).2 w.left) =
       N.weight (C.localSwapAt w).first := by
-  simp [swapSignedFamilyAt]
+  rw [C.swapSignedFamilyAt_path_left family w]
+  exact N.weight_castSinkPath _ _
 
 @[simp] theorem ResourceSwapCertificate.swapSignedFamilyAt_weight_right
     {N : ResourcePathNetwork R (Fin n) Resource}
@@ -209,7 +479,8 @@ theorem ResourceSwapCertificate.swapSignedFamilyAt_path_of_ne
     (w : SharedResourceWitness N family) :
     N.weight ((C.swapSignedFamilyAt family w).2 w.right) =
       N.weight (C.localSwapAt w).second := by
-  simp [swapSignedFamilyAt, w.left_ne_right.symm]
+  rw [C.swapSignedFamilyAt_path_right family w]
+  exact N.weight_castSinkPath _ _
 
 theorem ResourceSwapCertificate.swapSignedFamilyAt_weight_of_ne
     {N : ResourcePathNetwork R (Fin n) Resource}
@@ -219,7 +490,8 @@ theorem ResourceSwapCertificate.swapSignedFamilyAt_weight_of_ne
     (hkleft : k ≠ w.left) (hkright : k ≠ w.right) :
     N.weight ((C.swapSignedFamilyAt family w).2 k) =
       N.weight (family.2 k) := by
-  simp [swapSignedFamilyAt, hkleft, hkright]
+  rw [C.swapSignedFamilyAt_path_of_ne family w k hkleft hkright]
+  exact N.weight_castSinkPath _ _
 
 /-- The selected resource remains shared by the two swapped family paths. -/
 abbrev SharedResourceWitness.afterSwap
@@ -262,6 +534,17 @@ abbrev SharedResourceWitness.afterSwap
     (w : SharedResourceWitness N family) :
     (w.afterSwap C).resource = w.resource :=
   rfl
+
+/-- Repeating an explicit-witness family swap restores the signed family. -/
+@[simp] theorem ResourceSwapCertificate.swapSignedFamilyAt_twice
+    {N : ResourcePathNetwork R (Fin n) Resource}
+    (C : ResourceSwapCertificate N)
+    (family : N.toFinitePathNetwork.SignedPathFamily)
+    (w : SharedResourceWitness N family) :
+    C.swapSignedFamilyAt (C.swapSignedFamilyAt family w) (w.afterSwap C) =
+      family := by
+  exact C.swapSignedFamilyAtRaw_twice family w.left w.right
+    w.left_ne_right w.resource w.left_uses w.right_uses
 
 /-- An explicit-witness family swap preserves unsigned family weight. -/
 theorem ResourceSwapCertificate.familyWeight_swapSignedFamilyAt
