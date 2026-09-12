@@ -110,6 +110,13 @@ omit [Fintype ι] [DecidableEq ι] in
   rfl
 
 omit [Fintype ι] [DecidableEq ι] in
+/-- Reindexing a path network gives the corresponding source/sink submatrix. -/
+@[simp] theorem reindex_matrix [AddCommMonoid R] {κ : Type x}
+    (N : FinitePathNetwork R ι) (source sink : κ → ι) :
+    (N.reindex source sink).matrix = N.matrix.submatrix source sink :=
+  rfl
+
+omit [Fintype ι] [DecidableEq ι] in
 @[simp] theorem matrix_apply [AddCommMonoid R] (N : FinitePathNetwork R ι)
     (s t : ι) :
     N.matrix s t = ∑ p : N.Path s t, N.weight p :=

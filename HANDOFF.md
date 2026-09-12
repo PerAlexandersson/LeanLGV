@@ -28,6 +28,18 @@ Last updated: 2026-09-12.
   a tiny end-to-end ranked-quiver regression example. Resource-disjointness and
   the RealRooted Toeplitz adapter belong in later, separately owned layers.
 
+## Finite-network foundation checkpoint
+
+- Issue PerAlexandersson/RealRooted#613 adds the checked matrix-level equality
+  `FinitePathNetwork.reindex_matrix` between network reindexing and
+  `Matrix.submatrix`, with the canonical source-row/sink-column orientation.
+  The focused `LGV.Finite` build passed with 1,389 jobs, the `LGV` umbrella
+  build passed with 1,407 jobs, and its axiom audit reports only `propext` and
+  `Quot.sound`.
+- Local branch `feat/finite-reindex-submatrix` is merged into local `main` at
+  its verified checkpoint. No remote is configured, so it cannot be pushed
+  until #612 is explicitly authorized.
+
 ## Active graph backend
 
 - `/root` owns the clean-room Mathlib-quiver backend requested on 2026-09-06:
