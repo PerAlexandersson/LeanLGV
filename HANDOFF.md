@@ -1,6 +1,32 @@
 # LeanLGV handoff
 
-Last updated: 2026-09-06.
+Last updated: 2026-09-12.
+
+## Landmark finalization audit
+
+- The standalone package is the canonical home for the independent LGV
+  landmark. The old `NonNestingRooks` checkout remains on ice and is not an
+  integration target.
+- The ranked-quiver backend is complete through the canonical first-collision
+  involution, signed cancellation, ordered unsigned determinant identity, and
+  nonnegative determinant theorem. The principal final witnesses are
+  `RankedQuiverNetwork.firstCollisionSwap_involutive`,
+  `RankedQuiverNetwork.det_pathMatrix_eq_sum_vertexDisjoint`, and
+  `RankedQuiverNetwork.det_pathMatrix_nonneg`.
+- A fresh `lake-workspace build LGV` passed on 2026-09-12 with 1,407 jobs.
+  Direct axiom audits of the abstract determinant expansion, ordered
+  cancellation certificate, quiver involution, signed and unsigned quiver
+  identities, and nonnegativity theorem report exactly `propext`,
+  `Classical.choice`, and `Quot.sound`. Static scans find no `sorry`, `admit`,
+  source `axiom`, prohibited tactic, option override, or overlong source line.
+- Local `main` is fast-forwarded through the completed quiver checkpoint and
+  this audit. The repository has no configured remote or upstream branch, and
+  `PerAlexandersson/LeanLGV` does not currently exist on GitHub. Remote
+  publication, remote synchronization, and CI therefore remain a separately
+  authorized repository-administration task; do not invent or add a remote.
+- Next independent increments are a matrix-level reindex/submatrix theorem and
+  a tiny end-to-end ranked-quiver regression example. Resource-disjointness and
+  the RealRooted Toeplitz adapter belong in later, separately owned layers.
 
 ## Active graph backend
 
