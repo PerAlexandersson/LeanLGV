@@ -2,6 +2,18 @@
 
 Last updated: 2026-09-16.
 
+## Worktree consolidation
+
+- On 2026-09-16 the eight clean, process-free issue worktrees for #614,
+  #618--#621, #623, #626, and #627 were removed after their completion and
+  merge status was checked against this handoff. The primary checkout is now
+  the only registered LeanLGV worktree.
+- A verified all-ref bundle and the pre-cleanup worktree inventory are stored
+  outside the source tree at
+  `/mnt/2TB-Babel/ai-storage/quarantine/lean-worktree-cleanup-20260916.bCNoMn/`.
+  Every local feature branch remains; no branch, commit, build cache, source
+  file, remote state, or live process was removed.
+
 ## Public repository publication
 
 - **Public source and CI complete, 2026-09-16:** the owner selected public
