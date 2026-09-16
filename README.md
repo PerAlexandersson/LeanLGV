@@ -1,5 +1,10 @@
 # LeanLGV
 
+[![Lean Action CI][ci-badge]][ci-workflow]
+
+[ci-badge]: /PerAlexandersson/LeanLGV/actions/workflows/lean_action_ci.yml/badge.svg
+[ci-workflow]: /PerAlexandersson/LeanLGV/actions/workflows/lean_action_ci.yml
+
 LeanLGV is a small Lean 4 interface for the algebraic and ordered-boundary parts
 of the Lindström--Gessel--Viennot method.
 

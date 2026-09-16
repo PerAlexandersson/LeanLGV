@@ -1,0 +1,43 @@
+name: Lean Action CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check proof hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden='(^|[^[:alnum:]_])(sorry|admit|axiom|set_option|try|all_goals|any_goals)'
+          forbidden="${forbidden}([^[:alnum:]_]|$)"
+          if git grep -nE "${forbidden}" -- '*.lean'; then
+            echo 'Forbidden proof-hygiene token found in Lean source.' >&2
+            exit 1
+          fi
+          if git grep -nE '^import[[:space:]]+Mathlib[[:space:]]*$' -- '*.lean'; then
+            echo 'Broad Mathlib import found in Lean source.' >&2
+            exit 1
+          fi
+          awk '
+            length($0) > 100 {
+              print FILENAME ":" FNR ": line exceeds 100 columns"
+              bad = 1
+            }
+            END { exit bad }
+          ' $(git ls-files '*.lean')
+
+      - uses: leanprover/lean-action@v1
