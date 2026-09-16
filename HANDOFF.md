@@ -1,6 +1,25 @@
 # LeanLGV handoff
 
-Last updated: 2026-09-12.
+Last updated: 2026-09-16.
+
+## Public repository publication
+
+- **Public source published, CI push authentication-blocked, 2026-09-16:**
+  the owner explicitly selected public visibility.  The public repository is
+  `https://github.com/PerAlexandersson/LeanLGV`, and remote `main` is exactly
+  the previously verified source checkpoint
+  `2972793c049dc9c83bdc674bab5fca760e4563ed`.  Local `main` additionally has
+  commit `fdfebbd` adding a minimal Lean Action workflow, a proof-hygiene scan,
+  and the README badge.  Both `lake-workspace build LGV` and the full
+  `lake-workspace build` pass with 1,417 jobs; the hygiene scan and workflow
+  YAML parse also pass.  GitHub rejected only the workflow-bearing push because
+  the loaded OAuth token has `gist`, `read:org`, and `repo`, but not the
+  required `workflow` scope; SSH is unavailable.  Do not retry with force or
+  remove the workflow.  After an interactive
+  `gh auth refresh --hostname github.com --scopes workflow`, make a normal
+  push of local `main`, verify the Actions run, then close RealRooted issue
+  #612.  Until then the mathematical source is public and pinned, but #612 is
+  not complete because remote CI is still missing.
 
 ## Resource foundation
 
