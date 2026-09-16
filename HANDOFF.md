@@ -4,22 +4,18 @@ Last updated: 2026-09-16.
 
 ## Public repository publication
 
-- **Public source published, CI push authentication-blocked, 2026-09-16:**
-  the owner explicitly selected public visibility.  The public repository is
-  `https://github.com/PerAlexandersson/LeanLGV`, and remote `main` is exactly
-  the previously verified source checkpoint
-  `2972793c049dc9c83bdc674bab5fca760e4563ed`.  Local `main` additionally has
-  commit `fdfebbd` adding a minimal Lean Action workflow, a proof-hygiene scan,
-  and the README badge.  Both `lake-workspace build LGV` and the full
-  `lake-workspace build` pass with 1,417 jobs; the hygiene scan and workflow
-  YAML parse also pass.  GitHub rejected only the workflow-bearing push because
-  the loaded OAuth token has `gist`, `read:org`, and `repo`, but not the
-  required `workflow` scope; SSH is unavailable.  Do not retry with force or
-  remove the workflow.  After an interactive
-  `gh auth refresh --hostname github.com --scopes workflow`, make a normal
-  push of local `main`, verify the Actions run, then close RealRooted issue
-  #612.  Until then the mathematical source is public and pinned, but #612 is
-  not complete because remote CI is still missing.
+- **Public source and CI complete, 2026-09-16:** the owner selected public
+  visibility, and `https://github.com/PerAlexandersson/LeanLGV` is the canonical
+  repository. Commit `fdfebbd` adds the Lean Action workflow, proof-hygiene
+  scan, and README badge; commit `1f2500d2962ba11786a831d7270d29d9a265aba8`
+  makes the extracted manifest portable by restoring `.lake/packages` and the
+  package name `LeanLGV`, without changing any dependency revision. The first
+  public run `35110975900` exposed the stale Docker-only manifest path; the
+  focused and full `lake-workspace` builds then passed locally with 1,417 jobs,
+  and the repaired GitHub Actions run `35111163466` passed at `1f2500d` in
+  2m45s, including the proof-hygiene scan and full Lean build. Publication used
+  normal pushes only; no force push, history rewrite, release, or branch-policy
+  bypass was used. RealRooted issue #612 can now be closed with this provenance.
 
 ## Resource foundation
 
@@ -51,8 +47,8 @@ Last updated: 2026-09-16.
   `Classical.choice`, and `Quot.sound`.
 - The generic resource cancellation chain #621 -> #622 -> #623 is complete.
   The next mathematical layer is the separately owned RealRooted Toeplitz/PF
-  adapter (#624 and #625), while standalone repository publication remains
-  tracked independently in #612.
+  adapter (#624 and #625). Standalone publication and CI are complete; their
+  administrative tracking issue is RealRooted #612.
 
 - Issue PerAlexandersson/RealRooted#618 adds `ResourcePathNetwork`, extending
   the existing finite weighted network with a finite resource support for each
@@ -107,15 +103,13 @@ Last updated: 2026-09-16.
   identities, and nonnegativity theorem report exactly `propext`,
   `Classical.choice`, and `Quot.sound`. Static scans find no `sorry`, `admit`,
   source `axiom`, prohibited tactic, option override, or overlong source line.
-- Local `main` is fast-forwarded through the completed quiver checkpoint,
-  matrix reindexing theorem, and concrete five-vertex ranked-quiver example.
-  The repository has no configured remote or upstream branch, and
-  `PerAlexandersson/LeanLGV` does not currently exist on GitHub. Remote
-  publication, remote synchronization, and CI therefore remain a separately
-  authorized repository-administration task; do not invent or add a remote.
-- Next independent increments are resource-disjointness foundations and then
-  resource cancellation. The RealRooted Toeplitz/PF adapter belongs in a later,
-  separately owned layer.
+- Local and remote `main` contain the completed quiver checkpoint, matrix
+  reindexing theorem, concrete five-vertex ranked-quiver example, and the full
+  resource-cancellation endpoint. The public repository and its Lean Action CI
+  are active; run `35111163466` is the first green portable-manifest build.
+- The next mathematical increments are the separately owned RealRooted
+  Toeplitz/PF adapter issues #624 and #625. LeanLGV should remain independent of
+  RealRooted and application-specific path models.
 
 ## Finite-network foundation checkpoint
 
