@@ -47,10 +47,18 @@ Last updated: 2026-09-25.
   determinant nonnegativity, and the concrete example report exactly
   `propext`, `Classical.choice`, and `Quot.sound`; log
   `/tmp/leanlgv-434-axioms.log`.
-- Publication is the only remaining LeanLGV step: commit this focused branch,
-  push it normally, open one compatibility PR, verify exact-head CI and
-  mergeability, then merge and record the resulting commits here before
-  updating RealRooted's dependency pin.
+- **Published and merged:** source checkpoint
+  `6e5c8bd237b1e52cbf1a7cf30e89159b4f2add06` (tree
+  `d781bd86f68f1c75111fa070cb2ef91882b1bec5`) was pushed without rewriting and
+  reviewed as PR #1, `Migrate LeanLGV to Lean 4.34`.  GitHub confirmed the PR
+  head exactly matched that checkpoint and reported `CLEAN`/`MERGEABLE`.
+  Push run `36169712010` passed in 2m44s and PR run `36169732016` passed in
+  2m46s.  The PR merged normally at
+  `c709cce69a841e899a030bd022ecfe39a0ae9025` on 2026-09-25 17:54:31 UTC; its
+  tree is the tested tree above and its parents are the prior main
+  `33715ced33e3c9ef4e0f23d6f176c6a3b962be5a` and the exact tested head.
+- The compatibility lane is released.  RealRooted may now update its LeanLGV
+  dependency pin to the merged checkpoint and resume issue #675.
 
 ## Worktree consolidation
 
