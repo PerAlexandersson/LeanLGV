@@ -1,6 +1,56 @@
 # LeanLGV handoff
 
-Last updated: 2026-09-16.
+Last updated: 2026-09-25.
+
+## Active Lean 4.34 compatibility release
+
+- The user explicitly authorized this dependency repair to unblock
+  `PerAlexandersson/RealRooted#675`.  This checkout is the sole registered
+  LeanLGV worktree, was clean at current `origin/main`
+  `33715ced33e3c9ef4e0f23d6f176c6a3b962be5a`, and is now owned on branch
+  `fix/lean434-compatibility`.
+- Scope is deliberately narrow: migrate the package to the exact Lean 4.34 and
+  Mathlib dependency revisions already consumed by RealRooted, repair source
+  incompatibilities, run focused and full serialized `lake-workspace` builds,
+  source guards, and direct public-axiom checks, then publish and merge a
+  focused PR.  LeanLGV remains independent of RealRooted application code.
+- The motivating reproduced failure is
+  `LGV/Quiver/Network.lean:146`: under Lean 4.34 the existing
+  `simpa only [toFinitePathNetwork_weight]` in `pathWeight_nonneg` does not
+  reconcile the ordered-ring `LE` instance.  RealRooted log:
+  `/tmp/issue675-chip-matrix-1.log`.
+- The migration is implemented and locally validated.  `lean-toolchain`, the
+  Mathlib request in `lakefile.toml`, and every manifest dependency now match
+  the exact Lean 4.34 dependency set used by RealRooted; a normalized manifest
+  comparison (excluding RealRooted's LeanLGV package entry) is empty.
+- Source repairs make the quiver/finite-network adapters explicitly reducible,
+  replace proof-argument-sensitive rewrites with explicit path splits, migrate
+  dependent-`if` proofs away from deprecated simp lemmas, and give the tiny
+  example explicit exhaustive `Fintype` enumerations.  No theorem statement or
+  mathematical assumption changed.  The resource-family warnings were also
+  migrated to the Lean 4.34 theorem/simp style.
+- Serialized build evidence:
+  - focused `LGV.Quiver.Network` passed warning-free (1,560 jobs), log
+    `/tmp/leanlgv-434-network-3.log`;
+  - focused `LGV.Quiver.Family` passed warning-free (1,563 jobs), log
+    `/tmp/leanlgv-434-family-7.log`;
+  - end-to-end `LGV.Quiver.Examples` passed warning-free (1,566 jobs), log
+    `/tmp/leanlgv-434-examples-6.log`;
+  - focused `LGV.Resource.FamilySwap` passed warning-free (1,556 jobs), log
+    `/tmp/leanlgv-434-resource-family-swap.log`;
+  - final default/full build passed warning-free (1,575 jobs), log
+    `/tmp/leanlgv-434-full-3.log`.
+- The exact CI proof-hygiene scan, broad-import guard, 100-column guard,
+  residual deprecated-name scan, `git diff --check`, and manifest-revision
+  comparison all pass.  Direct audits of `pathWeight_nonneg`, both swap
+  involutions, first-collision involutivity, both determinant identities,
+  determinant nonnegativity, and the concrete example report exactly
+  `propext`, `Classical.choice`, and `Quot.sound`; log
+  `/tmp/leanlgv-434-axioms.log`.
+- Publication is the only remaining LeanLGV step: commit this focused branch,
+  push it normally, open one compatibility PR, verify exact-head CI and
+  mergeability, then merge and record the resulting commits here before
+  updating RealRooted's dependency pin.
 
 ## Worktree consolidation
 

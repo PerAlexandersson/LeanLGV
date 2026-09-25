@@ -67,19 +67,19 @@ theorem castSinkPath_heq
   simp [Uses]
 
 /-- The sink equality used at the left swapped source. -/
-def swapLeftSinkEq (N : ResourcePathNetwork R (Fin n) Resource)
+theorem swapLeftSinkEq (N : ResourcePathNetwork R (Fin n) Resource)
     (family : N.toFinitePathNetwork.SignedPathFamily) (i j : Fin n) :
     family.1 j = (family.1 * Equiv.swap i j) i := by
   simp [Equiv.Perm.mul_apply]
 
 /-- The sink equality used at the right swapped source. -/
-def swapRightSinkEq (N : ResourcePathNetwork R (Fin n) Resource)
+theorem swapRightSinkEq (N : ResourcePathNetwork R (Fin n) Resource)
     (family : N.toFinitePathNetwork.SignedPathFamily) (i j : Fin n) :
     family.1 i = (family.1 * Equiv.swap i j) j := by
   simp [Equiv.Perm.mul_apply]
 
 /-- Away from the swapped sources, the sink index is unchanged. -/
-def swapOtherSinkEq (N : ResourcePathNetwork R (Fin n) Resource)
+theorem swapOtherSinkEq (N : ResourcePathNetwork R (Fin n) Resource)
     (family : N.toFinitePathNetwork.SignedPathFamily) (i j k : Fin n)
     (hki : k ≠ i) (hkj : k ≠ j) :
     family.1 k = (family.1 * Equiv.swap i j) k := by
@@ -213,7 +213,7 @@ theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_path_right
     (C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 j =
       N.castSinkPath (N.swapRightSinkEq family i j)
         (C.swap (family.2 i) (family.2 j) resource hi hj).second := by
-  simp only [swapSignedFamilyAtRaw, dif_neg hij.symm, dite_true]
+  simp [swapSignedFamilyAtRaw, hij.symm]
 
 theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_path_of_ne
     {N : ResourcePathNetwork R (Fin n) Resource}
@@ -226,7 +226,7 @@ theorem ResourceSwapCertificate.swapSignedFamilyAtRaw_path_of_ne
     (C.swapSignedFamilyAtRaw family i j hij resource hi hj).2 k =
       N.castSinkPath (N.swapOtherSinkEq family i j k hki hkj)
         (family.2 k) := by
-  simp only [swapSignedFamilyAtRaw, dif_neg hki, dif_neg hkj]
+  simp [swapSignedFamilyAtRaw, hki, hkj]
 
 theorem ResourceSwapCertificate.uses_swapSignedFamilyAtRaw_left
     {N : ResourcePathNetwork R (Fin n) Resource}

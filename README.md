@@ -8,6 +8,8 @@
 LeanLGV is a small Lean 4 interface for the algebraic and ordered-boundary parts
 of the Lindström--Gessel--Viennot method.
 
+The package currently targets Lean 4.34.
+
 The package deliberately separates two concerns:
 
 - `LGV.Finite` expands the determinant of a finite path matrix and exposes an

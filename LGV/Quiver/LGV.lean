@@ -153,7 +153,7 @@ theorem det_pathMatrix_eq_sum_vertexDisjoint [CommRing R]
         N.SignedVertexDisjoint family},
         N.toFinitePathNetwork.familyWeight family.1.2 := by
   let C := N.orderedCancellationCertificate hcross
-  letI := N.instDecidablePredSignedVertexDisjoint
+  let _ := N.instDecidablePredSignedVertexDisjoint
   convert C.det_eq_sum_pairwiseDisjoint using 1 <;> rfl
 
 theorem det_pathMatrix_nonneg [CommRing R] [LinearOrder R]

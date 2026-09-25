@@ -7,8 +7,8 @@ Authors: Per Alexandersson
 import Mathlib.Combinatorics.Quiver.Path
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.Fintype.Sigma
-import Mathlib.Data.Finite.Prod
-import Mathlib.Data.Finite.Sigma
+import Mathlib.Basic.Finite.Prod
+import Mathlib.Basic.Finite.Sigma
 
 /-!
 # Finite paths in ranked quivers
@@ -55,7 +55,7 @@ theorem finite_exactLength [Finite V] [∀ a b : V, Finite (a ⟶ b)]
     (n : ℕ) (a b : V) : Finite (ExactLength a b n) := by
   induction n generalizing a b with
   | zero =>
-      letI : Subsingleton (ExactLength a b 0) := ⟨by
+      let _ : Subsingleton (ExactLength a b 0) := ⟨by
         rintro ⟨p, hp⟩ ⟨q, hq⟩
         apply Subtype.ext
         cases p with
@@ -67,7 +67,7 @@ theorem finite_exactLength [Finite V] [∀ a b : V, Finite (a ⟶ b)]
       exact Finite.of_injective (fun _ => PUnit.unit) fun _ _ _ =>
         Subsingleton.elim _ _
   | succ n ih =>
-      letI (c : V) : Finite (ExactLength a c n) := ih a c
+      let _ (c : V) : Finite (ExactLength a c n) := ih a c
       exact Finite.of_equiv (Σ c : V, ExactLength a c n × (c ⟶ b))
         (exactLengthSuccEquiv a b n).symm
 
@@ -75,7 +75,7 @@ theorem finite_exactLength [Finite V] [∀ a b : V, Finite (a ⟶ b)]
 noncomputable instance instFintypeExactLength [Fintype V]
     [∀ a b : V, Fintype (a ⟶ b)]
     (a b : V) (n : ℕ) : Fintype (ExactLength a b n) := by
-  letI := finite_exactLength n a b
+  let _ := finite_exactLength n a b
   exact Fintype.ofFinite _
 
 /-- Uniformly bounded paths are indexed by their exact length. -/
