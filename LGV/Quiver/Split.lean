@@ -243,9 +243,21 @@ theorem swapFirstAt_twice (N : RankedQuiverNetwork R V ι)
         (N.swapSecondAt p q hp hq)
         (N.mem_swapFirstAt_vertices p q hp hq)
         (N.mem_swapSecondAt_vertices p q hp hq) = p := by
-  unfold swapFirstAt swapSecondAt
+  let pSplit := N.splitAtVertex p hp
+  let qSplit := N.splitAtVertex q hq
+  have hFirst : x ∈ (pSplit.left.comp qSplit.right).vertices := by
+    rw [Quiver.Path.vertices_comp]
+    exact List.mem_append_right _
+      (Quiver.Path.start_mem_vertices qSplit.right)
+  have hSecond : x ∈ (qSplit.left.comp pSplit.right).vertices := by
+    rw [Quiver.Path.vertices_comp]
+    exact List.mem_append_right _
+      (Quiver.Path.start_mem_vertices pSplit.right)
+  change
+    (N.splitAtVertex (pSplit.left.comp qSplit.right) hFirst).left.comp
+        (N.splitAtVertex (qSplit.left.comp pSplit.right) hSecond).right = p
   rw [N.splitAtVertex_eq_of_comp, N.splitAtVertex_eq_of_comp]
-  exact (N.splitAtVertex p hp).comp_eq
+  exact pSplit.comp_eq
 
 /-- Swapping the same two paths twice at the same vertex restores the second
 path. -/
@@ -256,9 +268,21 @@ theorem swapSecondAt_twice (N : RankedQuiverNetwork R V ι)
         (N.swapSecondAt p q hp hq)
         (N.mem_swapFirstAt_vertices p q hp hq)
         (N.mem_swapSecondAt_vertices p q hp hq) = q := by
-  unfold swapFirstAt swapSecondAt
+  let pSplit := N.splitAtVertex p hp
+  let qSplit := N.splitAtVertex q hq
+  have hFirst : x ∈ (pSplit.left.comp qSplit.right).vertices := by
+    rw [Quiver.Path.vertices_comp]
+    exact List.mem_append_right _
+      (Quiver.Path.start_mem_vertices qSplit.right)
+  have hSecond : x ∈ (qSplit.left.comp pSplit.right).vertices := by
+    rw [Quiver.Path.vertices_comp]
+    exact List.mem_append_right _
+      (Quiver.Path.start_mem_vertices pSplit.right)
+  change
+    (N.splitAtVertex (qSplit.left.comp pSplit.right) hSecond).left.comp
+        (N.splitAtVertex (pSplit.left.comp qSplit.right) hFirst).right = q
   rw [N.splitAtVertex_eq_of_comp, N.splitAtVertex_eq_of_comp]
-  exact (N.splitAtVertex q hq).comp_eq
+  exact qSplit.comp_eq
 
 /-- The union of the two vertex sets is unchanged by a tail swap. -/
 theorem vertexFinset_swap_union [DecidableEq V]

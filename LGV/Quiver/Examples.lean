@@ -1,11 +1,11 @@
 /-
 Copyright (c) 2026 Per Alexandersson. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Per Alexandersson.
+Authors: Per Alexandersson
 -/
 
 import LGV.Quiver.LGV
-import Mathlib.Tactic.DeriveFintype
+import Mathlib.Data.Fintype.OfMap
 
 /-!
 # A tiny ranked-quiver consumer
@@ -30,14 +30,30 @@ inductive Vertex where
   | middle
   | sinkZero
   | sinkOne
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
+
+instance : Fintype Vertex :=
+  Fintype.ofList
+    [Vertex.sourceZero, Vertex.sourceOne, Vertex.middle,
+      Vertex.sinkZero, Vertex.sinkOne]
+    (by
+      intro x
+      cases x <;> simp)
 
 inductive Edge where
   | sourceZeroMiddle
   | sourceOneMiddle
   | middleSinkZero
   | middleSinkOne
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
+
+instance : Fintype Edge :=
+  Fintype.ofList
+    [Edge.sourceZeroMiddle, Edge.sourceOneMiddle,
+      Edge.middleSinkZero, Edge.middleSinkOne]
+    (by
+      intro e
+      cases e <;> simp)
 
 def edgeSource : Edge → Vertex
   | .sourceZeroMiddle => .sourceZero

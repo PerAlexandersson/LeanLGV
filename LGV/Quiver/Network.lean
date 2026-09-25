@@ -42,7 +42,7 @@ variable {R : Type u} {V : Type v} {ι : Type w}
 variable [Quiver V]
 
 /-- Forget the quiver presentation and retain the finite path-network data. -/
-def toFinitePathNetwork [Monoid R] [Fintype V]
+@[reducible] def toFinitePathNetwork [Monoid R] [Fintype V]
     [∀ a b : V, Fintype (a ⟶ b)]
     (N : RankedQuiverNetwork R V ι) :
     FinitePathNetwork R ι where
@@ -143,8 +143,8 @@ theorem pathWeight_nonneg [Semiring R] [LinearOrder R] [IsStrictOrderedRing R]
     (hweight : ∀ {a b : V} (e : a ⟶ b), 0 ≤ N.edgeWeight e)
     {i j : ι} (p : N.toFinitePathNetwork.Path i j) :
     0 ≤ N.toFinitePathNetwork.weight p := by
-  simpa only [toFinitePathNetwork_weight] using
-    Quiver.Path.weight_nonneg hweight p
+  change 0 ≤ Quiver.Path.weight N.edgeWeight p
+  exact Quiver.Path.weight_nonneg hweight p
 
 end RankedQuiverNetwork
 
