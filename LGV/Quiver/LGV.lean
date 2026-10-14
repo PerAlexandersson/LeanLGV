@@ -112,6 +112,7 @@ theorem firstCollisionSwap_involutive [Monoid R]
       ¬N.SignedVertexDisjoint family}) :
     N.firstCollisionSwap (N.firstCollisionSwap b) = b := by
   apply Subtype.ext
+  dsimp only [firstCollisionSwap]
   exact N.swapAtFirstCollision_twice b.1 b.2
 
 theorem det_pathMatrix_eq_sum_signedVertexDisjoint [CommRing R]
@@ -120,17 +121,20 @@ theorem det_pathMatrix_eq_sum_signedVertexDisjoint [CommRing R]
       ∑ family : {family : N.toFinitePathNetwork.SignedPathFamily //
         N.SignedVertexDisjoint family},
         N.toFinitePathNetwork.signedFamilyWeight family.1 := by
-  let swap := N.firstCollisionSwap
-  apply FinitePathNetwork.det_matrix_eq_sum_goodFamilies_of_bad_involution
-    N.toFinitePathNetwork N.SignedVertexDisjoint swap
-  · intro b
-    exact N.toFinitePathNetwork.signedFamilyWeight_add_eq_zero_of_swap_eq_neg
+  have hcancel : ∀ b : {family : N.toFinitePathNetwork.SignedPathFamily //
+      ¬N.SignedVertexDisjoint family},
+      N.toFinitePathNetwork.signedFamilyWeight b.1 +
+        N.toFinitePathNetwork.signedFamilyWeight (N.firstCollisionSwap b).1 = 0 :=
+    fun b => N.toFinitePathNetwork.signedFamilyWeight_add_eq_zero_of_swap_eq_neg
       (N.signedFamilyWeight_swapAtFirstCollision b.1 b.2)
-  · intro b _ hb
-    apply N.swapAtFirstCollision_ne b.1 b.2
-    exact congrArg Subtype.val hb
-  · intro b
-    exact N.firstCollisionSwap_involutive b
+  have hfixed : ∀ b : {family : N.toFinitePathNetwork.SignedPathFamily //
+      ¬N.SignedVertexDisjoint family},
+      N.toFinitePathNetwork.signedFamilyWeight b.1 ≠ 0 →
+        N.firstCollisionSwap b ≠ b := fun b _ hb =>
+    N.swapAtFirstCollision_ne b.1 b.2 (congrArg Subtype.val hb)
+  exact FinitePathNetwork.det_matrix_eq_sum_goodFamilies_of_bad_involution
+    N.toFinitePathNetwork N.SignedVertexDisjoint N.firstCollisionSwap
+    hcancel hfixed N.firstCollisionSwap_involutive
 
 def orderedCancellationCertificate [CommRing R]
     (N : RankedQuiverNetwork R V (Fin n))
