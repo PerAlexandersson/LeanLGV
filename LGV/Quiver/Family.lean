@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Quiver.Split
-import Mathlib.Combinatorics.Quiver.Cast
+module
+
+public import LGV.Quiver.Split
+public import Mathlib.Combinatorics.Quiver.Cast
 
 /-!
 # Tail swaps in quiver path families
@@ -14,6 +16,8 @@ This file lifts the two-path tail swap to signed path families. Swapping the
 tails at source indices `i` and `j` right-multiplies the realized sink
 permutation by the transposition of `i` and `j`.
 -/
+
+@[expose] public section
 
 namespace LGV
 

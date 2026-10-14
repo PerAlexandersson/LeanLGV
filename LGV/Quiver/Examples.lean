@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Quiver.LGV
-import Mathlib.Data.Fintype.OfMap
+module
+
+public import LGV.Quiver.LGV
+public import Mathlib.Data.Fintype.OfMap
 
 /-!
 # A tiny ranked-quiver consumer
@@ -15,6 +17,8 @@ middle vertex, which feeds two sinks. The middle vertex certifies the ordered
 two-path obstruction, and the final theorem invokes ranked-quiver LGV
 nonnegativity with unit edge weights.
 -/
+
+@[expose] public section
 
 namespace LGV
 

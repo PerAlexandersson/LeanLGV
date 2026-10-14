@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import Mathlib.Combinatorics.Quiver.Path
-import Mathlib.Data.Fintype.EquivFin
-import Mathlib.Data.Fintype.Sigma
-import Mathlib.Basic.Finite.Prod
-import Mathlib.Basic.Finite.Sigma
+module
+
+public import Mathlib.Combinatorics.Quiver.Path
+public import Mathlib.Data.Fintype.EquivFin
+public import Mathlib.Data.Fintype.Sigma
+public import Mathlib.Basic.Finite.Prod
+public import Mathlib.Basic.Finite.Sigma
 
 /-!
 # Finite paths in ranked quivers
@@ -22,6 +24,8 @@ decreasing vertex rank to enumerate all paths between two vertices.
 open Quiver
 
 universe u v
+
+@[expose] public section
 
 namespace Quiver.Path
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Resource.Basic
+module
+
+public import LGV.Resource.Basic
 
 /-!
 # Resource-disjoint paths
@@ -12,6 +14,8 @@ import LGV.Resource.Basic
 This file characterizes disjoint finite resource supports by the absence of a
 shared resource. The results apply to paths with arbitrary endpoints.
 -/
+
+@[expose] public section
 
 namespace LGV
 

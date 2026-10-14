@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Resource.Disjoint
+module
+
+public import LGV.Resource.Disjoint
 
 /-!
 # Local swaps at shared resources
@@ -17,6 +19,8 @@ is involutive when repeated at the same resource.
 The certificate is an input interface for concrete path models. It does not
 assert that every resource network admits such a swap.
 -/
+
+@[expose] public section
 
 namespace LGV
 

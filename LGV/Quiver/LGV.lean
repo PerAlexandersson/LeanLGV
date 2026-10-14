@@ -4,11 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Quiver.Collision
+module
+
+public import LGV.Quiver.Collision
 
 /-!
 # Weighted Lindström--Gessel--Viennot cancellation for ranked quivers
 -/
+
+@[expose] public section
 
 namespace LGV
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Quiver.Network
+module
+
+public import LGV.Quiver.Network
 
 /-!
 # Splitting and swapping ranked quiver paths
@@ -14,6 +16,8 @@ Consequently, a path which visits `x` has a unique decomposition into a prefix
 ending at `x` and a suffix starting at `x`.  This file packages that split and
 the elementary tail swap used by the LGV involution.
 -/
+
+@[expose] public section
 
 namespace LGV
 

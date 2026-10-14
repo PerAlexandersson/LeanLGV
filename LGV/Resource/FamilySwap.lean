@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Resource.Family
-import LGV.Resource.Swap
+module
+
+public import LGV.Resource.Family
+public import LGV.Resource.Swap
 
 /-!
 # Resource swaps in signed path families
@@ -13,6 +15,8 @@ import LGV.Resource.Swap
 This file lifts a certified local swap at an explicit shared-resource witness
 to a signed path family. Collision selection remains a separate concern.
 -/
+
+@[expose] public section
 
 namespace LGV
 

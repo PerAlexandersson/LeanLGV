@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Ordered
-import LGV.Quiver.Path
-import Mathlib.Combinatorics.Quiver.Path.Vertices
-import Mathlib.Combinatorics.Quiver.Path.Weight
+module
+
+public import LGV.Ordered
+public import LGV.Quiver.Path
+public import Mathlib.Combinatorics.Quiver.Path.Vertices
+public import Mathlib.Combinatorics.Quiver.Path.Weight
 
 /-!
 # Finite ranked quiver networks
@@ -17,6 +19,8 @@ abstract finite path network used by `LGV.Finite`. It also defines the standard
 vertex-disjointness relation and records the path-weight algebra used by a
 tail swap.
 -/
+
+@[expose] public section
 
 namespace LGV
 

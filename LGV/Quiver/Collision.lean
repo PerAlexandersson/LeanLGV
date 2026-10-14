@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Quiver.Family
+module
+
+public import LGV.Quiver.Family
 
 /-!
 # Canonical collisions in ranked quiver path families
@@ -14,6 +16,8 @@ least pair of path indices meeting at that rank. A ranked path has at most one
 vertex of each rank, so the vertex witnessing the selected rank and pair is
 unique. This avoids imposing an artificial order on the vertex type.
 -/
+
+@[expose] public section
 
 namespace LGV
 

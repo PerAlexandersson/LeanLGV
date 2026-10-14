@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Resource.FamilySwap
+module
+
+public import LGV.Resource.FamilySwap
 
 /-!
 # Cancellation from coherent resource selection
@@ -14,6 +16,8 @@ already checked explicit-witness family swap. A concrete model supplies the
 selector and its coherence laws; the resulting bad-family involution is then
 generic.
 -/
+
+@[expose] public section
 
 namespace LGV
 

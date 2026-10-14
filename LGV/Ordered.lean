@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Finite
-import Mathlib.Data.Fin.Tuple.Sort
+module
+
+public import LGV.Finite
+public import Mathlib.Data.Fin.Tuple.Sort
+
+import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
 
 /-!
 # Ordered-boundary LGV consequences
@@ -15,6 +19,8 @@ permutations from the finite LGV expansion. It deliberately treats disjointness
 and the sign-reversing swap abstractly: graph topology and first-intersection
 constructions belong in backend modules.
 -/
+
+@[expose] public section
 
 namespace LGV
 

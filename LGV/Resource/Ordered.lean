@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Resource.Cancellation
+module
+
+public import LGV.Resource.Cancellation
 
 /-!
 # Ordered LGV from resource cancellation
@@ -13,6 +15,8 @@ This file combines generic resource cancellation data with the existing
 ordered two-path obstruction. It is the determinant endpoint of the standalone
 resource layer.
 -/
+
+@[expose] public section
 
 namespace LGV
 

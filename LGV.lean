@@ -1,16 +1,18 @@
-import LGV.Finite
-import LGV.Ordered
-import LGV.Resource.Basic
-import LGV.Resource.Disjoint
-import LGV.Resource.Family
-import LGV.Resource.Swap
-import LGV.Resource.FamilySwap
-import LGV.Resource.Cancellation
-import LGV.Resource.Ordered
-import LGV.Quiver.Network
-import LGV.Quiver.Path
-import LGV.Quiver.Split
-import LGV.Quiver.Family
-import LGV.Quiver.Collision
-import LGV.Quiver.LGV
-import LGV.Quiver.Examples
+module
+
+public import LGV.Finite
+public import LGV.Ordered
+public import LGV.Resource.Basic
+public import LGV.Resource.Disjoint
+public import LGV.Resource.Family
+public import LGV.Resource.Swap
+public import LGV.Resource.FamilySwap
+public import LGV.Resource.Cancellation
+public import LGV.Resource.Ordered
+public import LGV.Quiver.Network
+public import LGV.Quiver.Path
+public import LGV.Quiver.Split
+public import LGV.Quiver.Family
+public import LGV.Quiver.Collision
+public import LGV.Quiver.LGV
+public import LGV.Quiver.Examples

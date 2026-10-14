@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Ordered
-import LGV.Resource.Disjoint
+module
+
+public import LGV.Ordered
+public import LGV.Resource.Disjoint
 
 /-!
 # Resource-disjoint path families
@@ -13,6 +15,8 @@ import LGV.Resource.Disjoint
 This file lifts resource-disjointness from two paths to signed finite path
 families and connects it to the abstract predicate used by `LGV.Ordered`.
 -/
+
+@[expose] public section
 
 namespace LGV
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import LGV.Finite
+module
+
+public import LGV.Finite
 
 /-!
 # Finite resource-labelled path networks
@@ -13,6 +15,8 @@ This file adds finite resource support to the abstract path networks from
 `LGV.Finite`. It deliberately contains no disjointness or cancellation API:
 those consequences belong in later resource modules.
 -/
+
+@[expose] public section
 
 namespace LGV
 

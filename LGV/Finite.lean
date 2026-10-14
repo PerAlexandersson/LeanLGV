@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Per Alexandersson
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.Fintype.BigOperators
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+module
+
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Data.Fintype.BigOperators
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 /-!
 # Finite LGV algebra
@@ -21,6 +23,8 @@ cancellation form used by a first-intersection involution. Concrete backends
 can instantiate `Good` as the nonintersecting families and provide the
 sign-reversing involution on its complement.
 -/
+
+@[expose] public section
 
 namespace LGV
 
